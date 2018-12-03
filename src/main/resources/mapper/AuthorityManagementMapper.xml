@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.community.demo.dao.AuthorityManagementMapper">
+  <resultMap id="BaseResultMap" type="com.community.demo.entity.AuthorityManagement">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="amName" jdbcType="VARCHAR" property="amname" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="beicon" jdbcType="VARCHAR" property="beicon" />
+    <result column="aficon" jdbcType="VARCHAR" property="aficon" />
+    <result column="childicon" jdbcType="VARCHAR" property="childicon" />
+    <result column="parentid" jdbcType="INTEGER" property="parentid" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, amName, url, beicon, aficon, childicon, parentid
+  </sql>
+  <select id="selectByExample" parameterType="com.community.demo.entity.AuthorityManagementExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from authority_management
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from authority_management
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from authority_management
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.community.demo.entity.AuthorityManagementExample">
+    delete from authority_management
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.community.demo.entity.AuthorityManagement">
+    insert into authority_management (id, amName, url, 
+      beicon, aficon, childicon, 
+      parentid)
+    values (#{id,jdbcType=INTEGER}, #{amname,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{beicon,jdbcType=VARCHAR}, #{aficon,jdbcType=VARCHAR}, #{childicon,jdbcType=VARCHAR}, 
+      #{parentid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.community.demo.entity.AuthorityManagement">
+    insert into authority_management
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="amname != null">
+        amName,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+      <if test="beicon != null">
+        beicon,
+      </if>
+      <if test="aficon != null">
+        aficon,
+      </if>
+      <if test="childicon != null">
+        childicon,
+      </if>
+      <if test="parentid != null">
+        parentid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="amname != null">
+        #{amname,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="beicon != null">
+        #{beicon,jdbcType=VARCHAR},
+      </if>
+      <if test="aficon != null">
+        #{aficon,jdbcType=VARCHAR},
+      </if>
+      <if test="childicon != null">
+        #{childicon,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null">
+        #{parentid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.community.demo.entity.AuthorityManagementExample" resultType="java.lang.Long">
+    select count(*) from authority_management
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update authority_management
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.amname != null">
+        amName = #{record.amname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.url != null">
+        url = #{record.url,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beicon != null">
+        beicon = #{record.beicon,jdbcType=VARCHAR},
+      </if>
+      <if test="record.aficon != null">
+        aficon = #{record.aficon,jdbcType=VARCHAR},
+      </if>
+      <if test="record.childicon != null">
+        childicon = #{record.childicon,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentid != null">
+        parentid = #{record.parentid,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update authority_management
+    set id = #{record.id,jdbcType=INTEGER},
+      amName = #{record.amname,jdbcType=VARCHAR},
+      url = #{record.url,jdbcType=VARCHAR},
+      beicon = #{record.beicon,jdbcType=VARCHAR},
+      aficon = #{record.aficon,jdbcType=VARCHAR},
+      childicon = #{record.childicon,jdbcType=VARCHAR},
+      parentid = #{record.parentid,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.community.demo.entity.AuthorityManagement">
+    update authority_management
+    <set>
+      <if test="amname != null">
+        amName = #{amname,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="beicon != null">
+        beicon = #{beicon,jdbcType=VARCHAR},
+      </if>
+      <if test="aficon != null">
+        aficon = #{aficon,jdbcType=VARCHAR},
+      </if>
+      <if test="childicon != null">
+        childicon = #{childicon,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null">
+        parentid = #{parentid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.community.demo.entity.AuthorityManagement">
+    update authority_management
+    set amName = #{amname,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      beicon = #{beicon,jdbcType=VARCHAR},
+      aficon = #{aficon,jdbcType=VARCHAR},
+      childicon = #{childicon,jdbcType=VARCHAR},
+      parentid = #{parentid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <resultMap id="list" type="com.community.demo.entity.AuthorityManagement">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="amName" jdbcType="VARCHAR" property="amname" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="beicon" jdbcType="VARCHAR" property="beicon" />
+    <result column="aficon" jdbcType="VARCHAR" property="aficon" />
+    <result column="childicon" jdbcType="VARCHAR" property="childicon" />
+   <collection property="ls" column="id" ofType="com.community.demo.entity.AuthorityManagement" select="findbyID"></collection>
+
+  </resultMap>
+  <select id="findbyID" resultMap="list" >
+    select * from authority_management where parentid=#{value}
+  </select>
+
+
+  <select id="findAll" resultMap="list">
+    select * from authority_management where parentid=1
+  </select>
+</mapper>

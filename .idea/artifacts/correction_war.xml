@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="correction:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="springboot_310-0.0.1-SNAPSHOT.war">
+      <element id="artifact" artifact-name="correction:war exploded" />
+    </root>
+  </artifact>
+</component>
