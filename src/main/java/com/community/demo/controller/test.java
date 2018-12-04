@@ -6,11 +6,14 @@ import com.community.demo.dao.RectificationMapper;
 import com.community.demo.entity.AuthorityManagement;
 import com.community.demo.entity.AuthorityManagementExample;
 import com.community.demo.entity.Rectification;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
 import java.util.List;
@@ -43,10 +46,12 @@ public class test {
 
     // 查询所有犯人信息
     @RequestMapping("home.html")
-    public String RectificationQuery(Model model){
-        List<Map<String,Object>> list = rm.queryAll();
-        model.addAttribute("list",list);
-        System.out.println(list);
+    public String RectificationQuery(@RequestParam(value="pn",defaultValue="1") Integer pn, Model model){
+        PageHelper.startPage(pn,5);
+        List<Map<String, Rectification>> maps = rm.queryAll();
+        PageInfo<Map<String, Rectification>> page=new PageInfo<Map<String, Rectification>>(maps);
+        model.addAttribute("PageInfo",page);
+        System.out.println(page);
         return  "home";
     }
 

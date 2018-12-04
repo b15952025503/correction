@@ -32,5 +32,5 @@ public interface RectificationMapper {
 
     int updateByPrimaryKey(Rectification record);
 
-    public List<Map<String,Object>> queryAll();
+    public List<Map<String, Rectification>> queryAll();
 }

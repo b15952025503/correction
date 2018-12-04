@@ -1,18 +1,93 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-        <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <title>Title</title>
+
+
+    <link rel="stylesheet" href="css/layui.css">
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="js/layui.js"></script>
+    <script type="text/javascript" src="js/vue.min.js"></script>
+
+
 </head>
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-<script>
-        $(function () {
-            alert(1);
-        })
-</script>
 
 <body>
 
-    <div th:text="${list}">11</div>
+<form action="" method="post">
+    <fieldset class="layui-elem-field">
+        <legend>矫正人员基本信息</legend>
+        <div class="layui-field-box">
+            <table class="layui-table" lay-size="sm">
+                <colgroup>
+                    <col width="150">
+                    <col width="200">
+                    <col>
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>姓名</th>
+                    <th>性别</th>
+                    <th>执行类别</th>
+                    <th>监管级别</th>
+                    <th>入矫日期</th>
+                    <th>矫正截止</th>
+                    <th>状态</th>
+                </tr>
+                </thead>
+                <tbody th:each="it :${PageInfo}">
+                    <tr th:each="item :${it.list}">
+                        <td th:text="${item.rname}"></td>
+                        <td th:text="${item.sex}"></td>
+                        <td th:text="${item.pcname}"></td>
+                        <td th:text="${item.rgname}"></td>
+                        <td th:text="${item.inAffair}"></td>
+                        <td th:text="${item.endDate}"></td>
+                        <td th:text="${item.fname}"></td>
+                    </tr>
+                </tbody>
+
+               <!-- <tbody  th:each="item :${list}">
+                <tr>
+                    <td th:text="${item.rname}"></td>
+                    <td th:text="${item.sex}"></td>
+                    <td th:text="${item.pcname}"></td>
+                    <td th:text="${item.rgname}"></td>
+                    <td th:text="${item.inAffair}"></td>
+                    <td th:text="${item.endDate}"></td>
+                    <td th:text="${item.fname}"></td>
+                </tr>
+                </tbody>-->
+            </table>
+        </div>
+    </fieldset>
+
+</form>
+
+
+<!--<div class="ui circular labels" style="float: right;">
+    <a class="ui label">当前第 ${pageInfo.pageNum }页,总${pageInfo.pages }
+        页,总 ${pageInfo.total } 条记录</a>
+    <a class="ui label" href="info?pn=1">首页</a>
+    <c:if test="${pageInfo.hasPreviousPage }">
+        <a class="ui label" href="info?pn=${pageInfo.pageNum-1 }">&laquo;</a>
+    </c:if>
+
+    <c:forEach items="${pageInfo.navigatepageNums }" var="page_Num">
+        <c:if test="${page_Num == pageInfo.pageNum }">
+            <a class="ui label" href="info?pn=${page_Num}">${page_Num}</a>
+        </c:if>
+        <c:if test="${page_Num != pageInfo.pageNum }">
+            <a class="ui label" href="info?pn=${page_Num}">${page_Num }</a>
+        </c:if>
+    </c:forEach>
+
+    <c:if test="${pageInfo.hasNextPage }">
+        <a class="ui label" href="info?pn=${pageInfo.pageNum+1 }">&raquo;</a>
+    </c:if>
+    <a class="ui label" href="info?pn=${pageInfo.pages}">末页</a>
+</div>-->
+<!-- 分页 end-->
 </body>
 </html>
