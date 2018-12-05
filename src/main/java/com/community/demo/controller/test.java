@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +28,7 @@ public class test {
     @Autowired
     RectificationMapper rm;
     //添加权限信息到model内
-    @RequestMapping("t1")
+    @RequestMapping("/t1")
     public String t1(Model model) {
         AuthorityManagementExample authorityManagementExample = new AuthorityManagementExample();
         AuthorityManagementExample.Criteria criteria = authorityManagementExample.createCriteria();
@@ -43,17 +44,47 @@ public class test {
         model.addAttribute("list",all);
         return "index";
     }
-
+    Integer totalPage;
     // 查询所有犯人信息
     @RequestMapping("home.html")
     public String RectificationQuery(@RequestParam(value="pn",defaultValue="1") Integer pn, Model model){
         PageHelper.startPage(pn,5);
         List<Map<String, Rectification>> maps = rm.queryAll();
+        System.out.println(maps);
         PageInfo<Map<String, Rectification>> page=new PageInfo<Map<String, Rectification>>(maps);
         model.addAttribute("PageInfo",page);
-        System.out.println(page);
+        totalPage=page.getPages();
         return  "home";
     }
 
+    //分页查询
+    @RequestMapping("query")
+    public String queryAll(String Num,Model model){
+
+        Integer pn=1;
+        if(Num!=null){
+            if(Num.equals("add")){
+                pn++;
+            }
+            if(Num.equals("sub")){
+                pn--;
+            }
+            if(Num.equals("first")){
+                pn=1;
+            }
+            if(Num.equals("end")){
+                pn=totalPage;
+            }
+        }
+        System.out.println(pn);
+        PageHelper.startPage(pn,5 );
+        List<Map<String, Rectification>> maps = rm.queryAll();
+        System.out.println(maps);
+        PageInfo<Map<String, Rectification>> page=new PageInfo<Map<String, Rectification>>(maps);
+        model.addAttribute("PageInfo",page);
+        /*System.out.println(maps);
+        System.out.println(page);*/
+        return "home";
+    }
 
 }
