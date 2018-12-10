@@ -2,6 +2,7 @@ package com.community.demo;
 
 import com.community.demo.dao.AuthorityManagementMapper;
 import com.community.demo.entity.AuthorityManagement;
+import com.community.demo.entity.RectificationExample;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,7 @@ public class CorrectionApplicationTests {
 	AuthorityManagementMapper authorityManagementMapper;
 	@Test
 	public void contextLoads() {
-		AuthorityManagement all = authorityManagementMapper.findAll();
-		System.out.println(all);
+
 	}
 
 }

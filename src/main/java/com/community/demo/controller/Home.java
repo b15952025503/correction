@@ -22,7 +22,7 @@ import java.util.Map;
 
 
 @Controller
-public class test {
+public class Home {
     @Autowired
     AuthorityManagementMapper am;
     @Autowired
@@ -48,26 +48,27 @@ public class test {
     // 查询所有犯人信息
     @RequestMapping("home.html")
     public String RectificationQuery(@RequestParam(value="pn",defaultValue="1") Integer pn, Model model){
-        PageHelper.startPage(pn,5);
-        List<Map<String, Rectification>> maps = rm.queryAll();
+
+        PageHelper.startPage(pn,10);
+        List<Map<String, Rectification>> maps = rm.queryAll(null);
         System.out.println(maps);
         PageInfo<Map<String, Rectification>> page=new PageInfo<Map<String, Rectification>>(maps);
         model.addAttribute("PageInfo",page);
         totalPage=page.getPages();
         return  "home";
     }
-
+    public Integer pn=1;
     //分页查询
     @RequestMapping("query")
-    public String queryAll(String Num,Model model){
+    public String queryAll(String Num,Model model,String name){
 
-        Integer pn=1;
+
         if(Num!=null){
             if(Num.equals("add")){
-                pn++;
+                ++pn;
             }
             if(Num.equals("sub")){
-                pn--;
+                --pn;
             }
             if(Num.equals("first")){
                 pn=1;
@@ -77,14 +78,13 @@ public class test {
             }
         }
         System.out.println(pn);
-        PageHelper.startPage(pn,5 );
-        List<Map<String, Rectification>> maps = rm.queryAll();
+        PageHelper.startPage(pn,10 );
+        List<Map<String, Rectification>> maps = rm.queryAll(name);
         System.out.println(maps);
         PageInfo<Map<String, Rectification>> page=new PageInfo<Map<String, Rectification>>(maps);
         model.addAttribute("PageInfo",page);
-        /*System.out.println(maps);
-        System.out.println(page);*/
-        return "home";
+
+        return "home::table_refresh";
     }
 
 }

@@ -461,14 +461,15 @@
     where rNO = #{rno,jdbcType=VARCHAR}
   </update>
 
-  <select id="queryAll" resultType="map">
+  <select id="queryAll" parameterType="string" resultType="map">
+
 
 select r.rno,r.phone,r.photo,r.rname,r.Former_name,r.idcard,r.sex,r.age,r.birthday,r.position,
 r.Marital_status,r.Native_place,r.household_registration,r.address ,
 r.Active_area,e.name ename,p.name pname,pc.name pcname,rg.name rgname,tp.name tpname,cd.context,
-rn.family,rn.address paddress,rn.phone pphone,j.jNo,j.courtName,j.judgmentDate,j.originalDate,j.Supplementary_punishments,
-j.charges,j.Verdict_penalty,j.executionDate,j.endDate,j.inAffair,j.affairDate,rf.fname
-from Rectification r join education e on r.eid=e.id
+rn.family,rn.address paddress,rn.phone pphone,j.jNo,j.courtName,j.judgmentDate,j.originalDate,j.endDate,j.Supplementary_punishments,
+j.charges,j.Verdict_penalty,j.executionDate,j.inAffair,j.affairDate,rf.fname
+from Rectification r  join education e on r.eid=e.id
 join politics p on r.pid=p.id
 join perform_category pc on pc.id=r.pcid
 join regulatory rg on rg.id=r.rid
@@ -477,7 +478,31 @@ join corpus_delicti cd on r.rNO=cd.rNO
 join relation rn on r.rNo=rn.rNO
 join judgment j on j.jNo=r.jNO
 join RectFlag rf on rf.id=r.flag
+<if test="_parameter!=null and _parameter!=''">
+where rname  like concat('%',#{param1},'%') or pc.name like concat('%',#{param1},'%')
+or rg.name like concat('%',#{param1},'%') or r.sex like concat('%',#{param1},'%')
+</if>
+ order by j.inAffair asc
+  </select>
 
+
+  <select id="queryById" parameterType="string" resultType="map">
+
+    select r.rno,r.phone,r.photo,r.rname,r.Former_name,r.idcard,r.sex,r.age,r.birthday,r.position,
+    r.Marital_status,r.Native_place,r.household_registration,r.address ,
+    r.Active_area,e.name ename,p.name pname,pc.name pcname,rg.name rgname,tp.name tpname,cd.context,
+    rn.family,rn.address paddress,rn.phone pphone,j.jNo,j.courtName,j.judgmentDate,j.originalDate,j.endDate,j.Supplementary_punishments,
+    j.charges,j.Verdict_penalty,j.executionDate,j.inAffair,j.affairDate,rf.fname
+    from Rectification r  join education e on r.eid=e.id
+    join politics p on r.pid=p.id
+    join perform_category pc on pc.id=r.pcid
+    join regulatory rg on rg.id=r.rid
+    join tp_mz tp on tp.id=r.tpid
+    join corpus_delicti cd on r.rNO=cd.rNO
+    join relation rn on r.rNo=rn.rNO
+    join judgment j on j.jNo=r.jNO
+    join RectFlag rf on rf.id=r.flag
+    where r.rno=#{param1}
 
   </select>
 </mapper>

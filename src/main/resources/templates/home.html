@@ -7,9 +7,40 @@
 
     <link rel="stylesheet" href="/css/layui.css">
     <script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
-    <script type="text/javascript" src="/js/layui.js"></script>
+    <script src="./lib/layui/layui.js" charset="utf-8"></script>
 </head>
+<script>
 
+    //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function(){
+        var element = layui.element;
+
+        //…
+    });
+
+    function showInfo(obj) {
+        var name=$(obj).find(":input").attr("name");
+
+        $("#dst").load("RectificationController/queryById?name="+name);
+        $("#dst").css('display','block');
+        $("#bg").css('display','block');
+        /*alert(dts)*/
+/*        $(obj).html($("#dst").html())*/;
+    }
+    function closeInfo(obj) {
+        var objhtml=$("obj").html("");
+        /*alert(objhtml)
+         $(obj).html(dts);*/
+    }
+    $(function () {
+        $("#dst").click(function () {
+            $("#dst").css('display','none');
+            $("#bg").css('display','none');
+        })
+    })
+
+
+</script>
 
 <style type="text/css">
     #con{
@@ -22,24 +53,97 @@
         top:8px;
         left:80px;
     }
+
+    #frm{
+        height: 550px;
+    }
+    #rinfo{
+        position: absolute;
+        right:-120px;
+        top:0px;
+    }
+    .sp{
+        display: block;
+        width: 130px;
+        height: 120px;
+        float: left;
+    }
+    .info1{
+        width: 270px;
+        float: left;
+        height: 120px;
+    }
+    .info2{
+        width: 270px;
+        float: left;
+        height: 120px;
+    }
+    #dst{
+        display: none;
+        position: absolute;
+        z-index: 99;
+        margin-left: 120px;
+        margin-top:180px;
+        color: #B2B2B2;
+        background: black;
+        opacity:0.7;
+    }
+    #bg{
+        position: absolute;
+        left:0px;
+        top:0px;
+        width: 100%;
+        height:100%;
+        background: rgba(0,0,0,0.5);
+        z-index:96;
+        display: none;
+    }
+    #dst span{
+        color:#B2B2B2;
+    }
+    #dst div{
+        color:#C2BE9E;
+    }
 </style>
 
 <body>
+<div id="bg"></div>
+
+
+<table id="dst" th:fragment="dst_refresh" >
+    <div class="sp" th:each="item :${dstInfo}">
+        <img th:src="${item.photo}" width="90" height="120" >
+    </div>
+    <div class="info1" th:each="item :${dstInfo}">
+        <div>出生日期:<span th:text="${item.birthday}"></span></div>
+        <div>判决书号:<span th:text="${item.jNo}"></span></div>
+        <div>原判日期:<span th:text="${item.judgmentDate}"></span></div>
+        <div>执行类别:<span th:text="${item.pcname}"></span></div>
+        <div>居住地址:<span th:text="${item.address}"></span></div>
+        <div>犯罪事实:<span th:text="${item.context}"></span></div>
+    </div>
+    <div class="info2" th:each="item :${dstInfo}">
+        <div>入矫日期:<span th:text="${item.inAffair}"></span></div>
+        <div>罪名:<span th:text="${item.charges}"></span></div>
+        <div>附加刑:<span th:text="${item.Supplementary_punishments}"></span></div>
+        <div>矫正期限:<span th:text="${item.affairDate}"></span></div>
+        <div>户籍地址:<span th:text="${item.household_registration}"></span></div>
+    </div>
+</table>
+
+
 
 </div>
     <div class="layui-container" id="con">
         <div class="layui-row">
-            <div class="layui-col-md9">
-                <form action="" method="post">
+            <div class="layui-col-md8">
+                <form action="" method="post" id="frm">
                     <fieldset class="layui-elem-field">
                         <legend>矫正人员基本信息</legend>
+                     <input type="text" name="name" id="tj" required lay-verify="required" placeholder="请输入要查询的内容" autocomplete="off" class="layui-input"></span>
                         <div class="layui-field-box">
-                    <table  lay-size="sm"  class="layui-table"  >
-                        <colgroup>
-                            <col width="150">
-                            <col width="200">
-                            <col>
-                        </colgroup>
+                    <table  lay-size="sm"  class="layui-table" id="table_refresh"    th:fragment="table_refresh">
+
                         <thead>
                         <tr>
                             <th>姓名</th>
@@ -52,8 +156,8 @@
                         </tr>
                         </thead>
 
-                        <tbody th:each="it :${PageInfo}" >
-                            <tr th:each="item :${it.list}">
+                        <tbody th:each="it :${PageInfo}"  >
+                            <tr th:each="item :${it.list}" onclick="showInfo(this)" onmouseout="closeInfo(this)">                               <input type="hidden" th:name="${item.rno}"/>
                             <td th:text="${item.rname}"></td>
                             <td th:text="${item.sex}"></td>
                             <td th:text="${item.pcname}"></td>
@@ -73,25 +177,121 @@
 
                 </form>
             </div>
-            <div class="layui-col-md3">
+            <div class="layui-col-md4">
+                <div id="rinfo">
+
+                    <div class="layui-tab layui-tab-card">
+                        <ul class="layui-tab-title">
+                            <li class="layui-this">公告管理</li>
+                            <li onclick="showLog()">日志记录</li>
+                            <li>角色定义</li>
+                            <li>活动区域</li>
+                        </ul>
+                        <div class="layui-tab-content" style="height:500px; width:400px; overflow: auto;" >
+                            <div class="layui-tab-item layui-show">
+
+                                <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                                    <legend>公告信息:</legend>
+                                </fieldset>
+
+                                <ul class="layui-timeline">
+                                    <li class="layui-timeline-item">
+                                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                                        <div class="layui-timeline-content layui-text">
+                                            <div class="layui-timeline-title">2018年
+                                                我的测试内容
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="layui-timeline-item">
+                                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                                        <div class="layui-timeline-content layui-text">
+                                            <div class="layui-timeline-title">结束</div>
+                                        </div>
+                                    </li>
+
+                                </ul>
 
 
+                            </div>
+                            <div  class="layui-tab-item" >
+                                <table id="log"  th:fragment="log_refresh"  lay-size="sm"  class="layui-table" lay-even="" lay-skin="nob">
+                                    <thead>
+                                    <tr>
+                                        <th>姓名</th>
+                                        <th>时间</th>
+                                        <th>手机号</th>
+                                        <th>具体操作</th>
+                                    </tr>
+                                    <tbody th:each="it : ${logInfo}">
+                                        <tr>
+                                            <td th:text="${it.ename}" ></td>
+                                            <td th:text="${it.ldate}"></td>
+                                            <td th:text="${it.phone}"></td>
+                                            <input type="hidden" th:value="${it.context}"/>
+                                            <td><button class="layui-btn layui-btn-primary layui-btn-sm" onclick="showDetils(this)">详细信息</button></td>
+                                        </tr>
+                                    </tbody>
+<!--
+                                    <div th:each="it : ${logInfo}">
+                                        <div th:text="${it.context}"></div>
+                                    </div>-->
+                                </table>
+
+                            </div>
+                            <div class="layui-tab-item">3</div>
+                            <div class="layui-tab-item">4</div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
+        <div>
         <div class="layui-col-md3">1</div>
         <div class="layui-col-md3">2</div>
         <div class="layui-col-md3">3</div>
+        </div>
     </div>
 
-
     <script type="text/javascript">
+
+
+
+        //加载日志信息
+        function showLog()
+        {
+            $('#log').load("loginInfo/query");
+        }
+        //显示日志的内容
+        function showDetils(obj){
+            var t=$(obj).parent().prev().val();
+
+            layui.use('layer', function(){
+                var layer = layui.layer;
+
+                layer.open({
+                    title: '操作信息'
+                    ,content: t
+                });
+            });
+        }
+    </script>
+    <script type="text/javascript">
+        //条件查询
+        $("#tj").keyup(function () {
+            var name=$("#tj").val();
+            $('#table_refresh').load("query?name="+name);
+            //$.post("query?name="+name)
+        })
+    </script>
+    <script type="text/javascript">
+        //分页
         function page(obj){
             var Num=obj;
-            window.location.href="query?Num="+Num;
-
+            $('#table_refresh').load("query?Num="+Num);
+            //window.location.href="query?Num="+Num;
         };
-
-
     </script>
 
 </body>

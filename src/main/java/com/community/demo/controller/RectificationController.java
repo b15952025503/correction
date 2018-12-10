@@ -24,15 +24,25 @@ public class RectificationController {
 
     @Autowired
     RectificationMapper rm;
-    @RequestMapping("query")
-    public String queryAll(@RequestParam(value="pn",defaultValue="1") Integer pn,Model model){
+    @RequestMapping("/query")
+    public String queryAll(@RequestParam(value="pn",defaultValue="1") Integer pn,Model model,String name){
         PageHelper.startPage(pn,5);
-        List<Map<String, Rectification>> maps = rm.queryAll();
+        List<Map<String, Rectification>> maps = rm.queryAll(name);
         System.out.println(maps);
         PageInfo<Map<String, Rectification>> page=new PageInfo<Map<String, Rectification>>(maps);
         model.addAttribute("PageInfo",page);
         System.out.println(page);
         return "t1";
     }
+
+    @RequestMapping("/queryById")
+    public String queryById(String name,Model model){
+        System.out.println(name);
+        List<Map<String, Rectification>> maps = rm.queryById(name);
+        model.addAttribute("dstInfo",maps);
+        System.out.println(maps);
+        return "home::dst_refresh";
+    }
+
 
 }

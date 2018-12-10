@@ -39,7 +39,9 @@
         </javaClientGenerator>
 
         <!-- 通讯录人员表 -->
-        <table schema="demo" tableName="Rectification"></table>
+        <table schema="demo" tableName="loginfo1"></table>
+        <table schema="demo" tableName="users"></table>
+        <table schema="demo" tableName="employees"></table>
         <!--
          <table schema="demo" tableName="education"></table>
          <table schema="demo" tableName="employees"></table>

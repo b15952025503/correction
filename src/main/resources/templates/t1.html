@@ -7,17 +7,58 @@
 
     <link rel="stylesheet" href="/css/layui.css">
     <script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
-    <script type="text/javascript" src="/js/layui.js"></script>
+
+    <script src="./lib/layui/layui.js" charset="utf-8"></script>
+    <style type="text/css">
 
 
+        #sp{
+            border: 1px solid red;
 
+            display: block;
+            width: 100px;
+            height: 130px;
+            float: left;
+        }
+        #info1{
+            border: 1px solid red;
+            width: 300px;
+            float: left;
+            height: 130px;
+
+        }
+        #info2{
+            border: 1px solid red;
+            width: 300px;
+            float: left;
+            height: 130px;
+        }
+    </style>
 </head>
 
-<body>
-<input type="button" value="末页"  	class="layui-btn layui-btn-sm layui-btn-primary"/>
+   <table>
+       <tr id="tr1">
+               <div id="sp">
+                    <img src="Emp1.jpg" width="60" height="120">
+               </div>
+               <div id="info1">
 
-
-
+                   <div>出生日期:</div>
+                   <div>判决书号:</div>
+                   <div>原判日期:</div>
+                   <div>执行类别:</div>
+                   <div>居住地址:</div>
+                   <div>犯罪事实:</div>
+               </div>
+           <div id="info2">
+               <div>入矫日期</div>
+               <div>罪名</div>
+               <div>附加刑</div>
+               <div>矫正期限</div>
+               <div>户籍地址</div>
+           </div>
+       </tr>
+   </table>
 
 <!--<div class="ui circular labels" style="float: right;">
     <a class="ui label">当前第 ${pageInfo.pageNum }页,总${pageInfo.pages }
@@ -42,8 +83,7 @@
     <a class="ui label" href="info?pn=${pageInfo.pages}">末页</a>
 </div>-->
 <!-- 分页 end-->
-<script type="text/javascript">
-</script>
+
 
 </body>
 </html>
