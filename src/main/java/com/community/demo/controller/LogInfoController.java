@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("loginInfo")
-public class LoginInfoController {
+@RequestMapping("logInfo")
+public class LogInfoController {
 
     @Autowired
     Loginfo1Mapper lm;
