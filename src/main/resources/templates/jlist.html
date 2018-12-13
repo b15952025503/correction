@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/layui.css">
+    <script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/js/layui.js"></script>
+    <script type="text/javascript" src="/js/vue.min.js"></script>
+
+</head>
+
+<style type="text/css">
+
+</style>
+
+<body>
+
+<div class="layui-container">
+    <form action="" method="post">
+        <table class="layui-table">
+            <thead>
+            <tr>
+                <th>书号</th>
+                <th>判决机关</th>
+                <th>判决日期</th>
+                <th>原判日期</th>
+                <th>截止日期</th>
+                <th>附加罪</th>
+                <th>罪名</th>
+                <th>判决处罚</th>
+                <th>行刑日期</th>
+                <th>入矫日期</th>
+                <th>矫正期限</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="it:${jud}">
+                <td th:text="${it.jno}"></td>
+                <td th:text="${it.courtname}"></td>
+                <td th:text="${it.judgmentdate}"></td>
+                <td th:text="${it.originaldate}"></td>
+                <td th:text="${it.enddate}"></td>
+                <td th:text="${it.supplementaryPunishments}"></td>
+                <td th:text="${it.charges}"></td>
+                <td th:text="${it.verdictPenalty}"></td>
+                <td th:text="${it.executiondate}"></td>
+                <td th:text="${it.inaffair}"></td>
+                <td th:text="${it.affairdate}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+</body>
+</html>

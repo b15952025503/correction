@@ -79,6 +79,23 @@ public class Rectification {
     private String fname;
 
     private String endDate;
+    private Integer fid;
+  /*  //文化程度
+    private Integer eid;
+    //政治面貌
+    private Integer pid;
+    //执行类型
+    private Integer pcid;
+    //监管级别
+    private Integer rid;
+    //矫正状态
+    private Integer rfid;
+    //民族
+    private Integer tid;*/
+
+    public Rectification() {
+        super();
+    }
 
     public String getEndDate() {
         return endDate;
@@ -382,6 +399,14 @@ public class Rectification {
 
     public void setFlag(String flag) {
         this.flag = flag == null ? null : flag.trim();
+    }
+
+    public Integer getFid() {
+        return fid;
+    }
+
+    public void setFid(Integer fid) {
+        this.fid = fid;
     }
 
     @Override

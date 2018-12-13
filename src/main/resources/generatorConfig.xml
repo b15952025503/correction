@@ -3,7 +3,7 @@
          "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
 <generatorConfiguration >
     <!-- mysql jar 文件位置 -->
-    <classPathEntry location="D:\Maven\localRepository\mysql\mysql-connector-java\8.0.12\mysql-connector-java-8.0.12.jar" />
+    <classPathEntry location="E:\Maven\localRepository\mysql\mysql-connector-java\8.0.13\mysql-connector-java-8.0.13.jar" />
     <context id="store" targetRuntime="MyBatis3">
         <commentGenerator>
             <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
@@ -39,9 +39,7 @@
         </javaClientGenerator>
 
         <!-- 通讯录人员表 -->
-        <table schema="demo" tableName="loginfo1"></table>
-        <table schema="demo" tableName="users"></table>
-        <table schema="demo" tableName="employees"></table>
+        <table schema="demo" tableName="proCity"></table>
         <!--
          <table schema="demo" tableName="education"></table>
          <table schema="demo" tableName="employees"></table>

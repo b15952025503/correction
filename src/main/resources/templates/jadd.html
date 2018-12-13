@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/layui.css">
+    <script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/js/layui.js"></script>
+    <script type="text/javascript" src="/js/vue.min.js"></script>
+
+
+    <script>
+        function aa() {
+            //Demo
+            layui.use('form', function(){
+                var form = layui.form;
+
+                //监听提交
+                form.on('submit(formDemo)', function(data){
+                    layer.msg(JSON.stringify(data.field));
+                    return false;
+                });
+            });
+        }
+
+    </script>
+</head>
+
+<body>
+<form class="layui-form" action="add" method="post">
+
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">判决机关</label>
+        <div class="layui-input-block">
+            <input type="text" name="courtname" required lay-verify="required" placeholder="请输入标题" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">判决日期</label>
+        <div class="layui-input-block">
+            <input type="date" name="judgmentdate" required lay-verify="required" placeholder="请输入标题" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">原判日期</label>
+        <div class="layui-input-block">
+            <input type="date" name="originaldate" required lay-verify="required" placeholder="请输入标题" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">截止日期</label>
+        <div class="layui-input-block">
+            <input type="date" name="enddate" required lay-verify="required" placeholder="请输入标题" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">附加刑</label>
+        <div class="layui-input-block">
+            <textarea name="supplementaryPunishments" placeholder="请输入内容" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">罪名</label>
+        <div class="layui-input-block">
+            <input type="text" name="charges" required lay-verify="required" placeholder="请输入标题" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">判决处罚</label>
+        <div class="layui-input-block">
+            <input type="text" name="verdictPenalty" required lay-verify="required" placeholder="请输入标题" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">行刑日期</label>
+        <div class="layui-input-block">
+            <input type="date" name="executiondate" required lay-verify="required" placeholder="请输入标题" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">入矫日期</label>
+        <div class="layui-input-block">
+            <input type="date" name="inaffair" required lay-verify="required" placeholder="请输入标题" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">矫正期限</label>
+        <div class="layui-input-inline">
+            <input type="text" name="affairdate" required lay-verify="required" placeholder="请输入密码" autocomplete="off"
+                   class="layui-input">
+        </div>
+        <div class="layui-form-mid layui-word-aux">辅助文字</div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+</body>
+</html>
