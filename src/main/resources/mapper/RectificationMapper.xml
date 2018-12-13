@@ -118,14 +118,14 @@
     </if>
 </delete>
   <insert id="insert" parameterType="com.community.demo.entity.Rectification">
-    insert into rectification (rNO,phone, photo, rname,
+    insert into rectification (rNO,phone, jno,photo, rname,
       Former_name, idcard, sex, 
       age, birthday, position, 
       Marital_status, Native_place, household_registration, 
       address, eid, pid, 
       pcid, rid, tpid, Active_area, 
       eflag, flag)
-    values (#{rno,jdbcType=VARCHAR},#{phone} ,#{photo,jdbcType=VARCHAR}, #{rname,jdbcType=VARCHAR},
+    values (#{rno,jdbcType=VARCHAR},#{phone},#{jno},#{photo,jdbcType=VARCHAR}, #{rname,jdbcType=VARCHAR},
       #{formerName,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, 
       #{age,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, #{position,jdbcType=VARCHAR}, 
       #{maritalStatus,jdbcType=VARCHAR}, #{nativePlace,jdbcType=VARCHAR}, #{householdRegistration,jdbcType=VARCHAR}, 
@@ -347,6 +347,7 @@
     update rectification
     set rNO = #{record.rno,jdbcType=VARCHAR},
       phone=#{record.phone},
+      jno=#{record.jno},
       photo = #{record.photo,jdbcType=VARCHAR},
       rname = #{record.rname,jdbcType=VARCHAR},
       Former_name = #{record.formerName,jdbcType=VARCHAR},
@@ -441,6 +442,7 @@
     update rectification
     set photo = #{photo,jdbcType=VARCHAR},
       phone=#{phone},
+      jno=#{jno},
       rname = #{rname,jdbcType=VARCHAR},
       Former_name = #{formerName,jdbcType=VARCHAR},
       idcard = #{idcard,jdbcType=VARCHAR},
