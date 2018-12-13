@@ -39,7 +39,16 @@
         })
     })
 
+    function pdf(obj) {
 
+        var rno=$(obj).parent().parent().find(":input").attr("name");
+      /*  layui.use('layer', function(){
+            var layer = layui.layer;
+            layer.msg('正在加载,请稍后!!!');
+        });*/
+
+       window.location.href="pdf/preview?rno="+rno;
+    }
 </script>
 
 <style type="text/css">
@@ -104,12 +113,12 @@
     #dst div{
         color:#C2BE9E;
     }
+
 </style>
 
 <body>
 <div id="bg"></div>
-
-
+</i>
 <table id="dst" th:fragment="dst_refresh" >
     <div class="sp" th:each="item :${dstInfo}">
         <img th:src="${item.photo}" width="90" height="120" >
@@ -140,7 +149,7 @@
                 <form action="" method="post" id="frm">
                     <fieldset class="layui-elem-field">
                         <legend>矫正人员基本信息</legend>
-                     <input type="text" name="name" id="tj" required lay-verify="required" placeholder="请输入要查询的内容" autocomplete="off" class="layui-input"></span>
+                     <input type="text" name="name" id="tj"  placeholder="请输入要查询的内容" autocomplete="off" class="layui-input"></span>
                         <div class="layui-field-box">
                     <table  lay-size="sm"  class="layui-table" id="table_refresh"    th:fragment="table_refresh">
 
@@ -153,18 +162,24 @@
                             <th>入矫日期</th>
                             <th>矫正截止</th>
                             <th>状态</th>
+                            <th>操作</th>
                         </tr>
                         </thead>
 
                         <tbody th:each="it :${PageInfo}"  >
-                            <tr th:each="item :${it.list}" onclick="showInfo(this)" onmouseout="closeInfo(this)">                               <input type="hidden" th:name="${item.rno}"/>
+                            <tr th:each="item :${it.list}" ondblclick="showInfo(this)" onmouseout="closeInfo(this)">
+                                <input type="hidden" th:name="${item.rno}"/>
                             <td th:text="${item.rname}"></td>
                             <td th:text="${item.sex}"></td>
                             <td th:text="${item.pcname}"></td>
-                            <td th:text="${item.rgname}"></td>
-                            <td th:text="${item.inAffair}"></td>
-                            <td th:text="${item.endDate}"></td>
-                            <td th:text="${item.fname}"></td>
+                                <td th:text="${item.rgname}"></td>
+                                <td th:text="${item.inAffair}"></td>
+                                <td th:text="${item.endDate}"></td>
+                                <td th:text="${item.fname}"></td>
+                                <td>
+                                    <a onclick="pdf(this)" class="layui-btn layui-btn-primary layui-btn-sm">详细信息</a>
+                                    <button  type="button"class="layui-btn layui-btn-primary layui-btn-sm">修改</button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
