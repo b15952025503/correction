@@ -55,7 +55,7 @@ public class Rectification {
 
     private String rgname;
 
-
+    private String phone;
     private String tpname;
 
     private String context;
@@ -95,6 +95,14 @@ public class Rectification {
 
     public Rectification() {
         super();
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getEndDate() {
@@ -438,6 +446,7 @@ public class Rectification {
                 ", pname='" + pname + '\'' +
                 ", pcname='" + pcname + '\'' +
                 ", rgname='" + rgname + '\'' +
+                ", phone='" + phone + '\'' +
                 ", tpname='" + tpname + '\'' +
                 ", context='" + context + '\'' +
                 ", family='" + family + '\'' +

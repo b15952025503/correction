@@ -44,6 +44,12 @@ public class Home {
         model.addAttribute("list",all);
         return "index";
     }
+    @RequestMapping("index.html")
+    public String index(Model model) {
+        AuthorityManagement all = am.findAll();
+        model.addAttribute("list",all);
+        return "index";
+    }
     Integer totalPage;
     // 查询所有犯人信息
     @RequestMapping("home.html")

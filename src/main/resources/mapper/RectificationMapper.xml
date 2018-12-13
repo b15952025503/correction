@@ -116,16 +116,16 @@
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-  </delete>
+</delete>
   <insert id="insert" parameterType="com.community.demo.entity.Rectification">
-    insert into rectification (rNO, photo, rname, 
+    insert into rectification (rNO,phone, jNo,photo, rname,
       Former_name, idcard, sex, 
       age, birthday, position, 
       Marital_status, Native_place, household_registration, 
       address, eid, pid, 
       pcid, rid, tpid, Active_area, 
       eflag, flag)
-    values (#{rno,jdbcType=VARCHAR}, #{photo,jdbcType=VARCHAR}, #{rname,jdbcType=VARCHAR}, 
+    values (#{rno,jdbcType=VARCHAR},#{phone},#{jNo},#{photo,jdbcType=VARCHAR}, #{rname,jdbcType=VARCHAR},
       #{formerName,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, 
       #{age,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, #{position,jdbcType=VARCHAR}, 
       #{maritalStatus,jdbcType=VARCHAR}, #{nativePlace,jdbcType=VARCHAR}, #{householdRegistration,jdbcType=VARCHAR}, 
@@ -346,6 +346,8 @@
   <update id="updateByExample" parameterType="map">
     update rectification
     set rNO = #{record.rno,jdbcType=VARCHAR},
+      phone=#{record.phone},
+      jno=#{record.jNo},
       photo = #{record.photo,jdbcType=VARCHAR},
       rname = #{record.rname,jdbcType=VARCHAR},
       Former_name = #{record.formerName,jdbcType=VARCHAR},
@@ -439,6 +441,8 @@
   <update id="updateByPrimaryKey" parameterType="com.community.demo.entity.Rectification">
     update rectification
     set photo = #{photo,jdbcType=VARCHAR},
+      phone=#{phone},
+      jno=#{jNo},
       rname = #{rname,jdbcType=VARCHAR},
       Former_name = #{formerName,jdbcType=VARCHAR},
       idcard = #{idcard,jdbcType=VARCHAR},
@@ -504,5 +508,23 @@ or rg.name like concat('%',#{param1},'%') or r.sex like concat('%',#{param1},'%'
     join RectFlag rf on rf.id=r.flag
     where r.rno=#{param1}
 
+  </select>
+  
+  
+  <select id="queryInfo" resultType="map">
+    select r.rno,r.phone,r.photo,r.rname,r.Former_name,r.idcard,r.sex,r.age,r.birthday,r.position,
+r.Marital_status,r.Native_place,r.household_registration,r.address ,
+r.Active_area,e.name ename,p.name pname,pc.name pcname,rg.name rgname,tp.name tpname,cd.context,
+rn.family,rn.address paddress,rn.phone pphone,j.jNo,j.courtName,j.judgmentDate,j.originalDate,j.endDate,j.Supplementary_punishments,
+j.charges,j.Verdict_penalty,j.executionDate,j.inAffair,j.affairDate,rf.fname
+from Rectification r  join education e on r.eid=e.id
+join politics p on r.pid=p.id
+join perform_category pc on pc.id=r.pcid
+join regulatory rg on rg.id=r.rid
+join tp_mz tp on tp.id=r.tpid
+join corpus_delicti cd on r.rNO=cd.rNO
+join relation rn on r.rNo=rn.rNO
+join judgment j on j.jNo=r.jNO
+join RectFlag rf on rf.id=r.flag
   </select>
 </mapper>
