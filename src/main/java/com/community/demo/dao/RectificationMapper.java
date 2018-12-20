@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Service;
 
 @Mapper
 public interface RectificationMapper {
@@ -32,10 +34,13 @@ public interface RectificationMapper {
 
     int updateByPrimaryKey(Rectification record);
 
-    public List<Map<String, Rectification>> queryAll(String name);
+    List<Map<String, Rectification>> queryAll(String name);
 
 
-    public List<Map<String, Object>> queryInfo();
+    List<Map<String, Object>> queryInfo();
 
-    public  List<Map<String,Rectification>> queryById(String rno);
+    List<Map<String,Rectification>> queryById(String rno);
+
+    @Select("SELECT c.corname name,count(*)value FROM correction c  join rectification r on c.corid=r.flag GROUP BY c.corname")
+    List<Map<String,Object>> queryStruts();
 }

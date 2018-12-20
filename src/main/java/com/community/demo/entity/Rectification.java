@@ -1,8 +1,20 @@
 package com.community.demo.entity;
 
+import freemarker.template.SimpleDate;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class Rectification {
+    private List<Rectification> list;
+
+    private String icon;
+
+    private String name;
+
+    private Integer value;
+
     private String rno;
 
     private String photo;
@@ -79,6 +91,38 @@ public class Rectification {
     private String fname;
 
     private String endDate;
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getValue() {
+        return value;
+    }
+
+    public void setValue(Integer value) {
+        this.value = value;
+    }
+
+    public List<Rectification> getList() {
+        return list;
+    }
+
+    public void setList(List<Rectification> list) {
+        this.list = list;
+    }
 
     public String getPhone() {
         return phone;
@@ -392,6 +436,52 @@ public class Rectification {
         this.flag = flag == null ? null : flag.trim();
     }
 
+    public Rectification() {
+        super();
+    }
+
+    public Rectification(String rno, String photo, String rname, String formerName, String idcard, String sex, String age, Date birthday, String position, String maritalStatus, String nativePlace, String householdRegistration, String address, Integer eid, Integer pid, Integer pcid, Integer rid, Integer tpid, String activeArea, String eflag, String flag, String flagName, String ename, String pname, String pcname, String rgname, String phone, String tpname, String context, String family, String paddress, String pphone, String jNo, String courtName, String judgmentDate, String originalDate, String supplementary_punishments, String fname, String endDate) {
+        this.rno = rno;
+        this.photo = photo;
+        this.rname = rname;
+        this.formerName = formerName;
+        this.idcard = idcard;
+        this.sex = sex;
+        this.age = age;
+        this.birthday = birthday;
+        this.position = position;
+        this.maritalStatus = maritalStatus;
+        this.nativePlace = nativePlace;
+        this.householdRegistration = householdRegistration;
+        this.address = address;
+        this.eid = eid;
+        this.pid = pid;
+        this.pcid = pcid;
+        this.rid = rid;
+        this.tpid = tpid;
+        this.activeArea = activeArea;
+        this.eflag = eflag;
+        this.flag = flag;
+        this.flagName = flagName;
+        this.ename = ename;
+        this.pname = pname;
+        this.pcname = pcname;
+        this.rgname = rgname;
+        this.phone = phone;
+        this.tpname = tpname;
+        this.context = context;
+        this.family = family;
+        this.paddress = paddress;
+        this.pphone = pphone;
+        this.jNo = jNo;
+        this.courtName = courtName;
+        this.judgmentDate = judgmentDate;
+        this.originalDate = originalDate;
+        Supplementary_punishments = supplementary_punishments;
+        this.fname = fname;
+        this.endDate = endDate;
+    }
+
     @Override
     public String toString() {
         return "Rectification{" +
@@ -434,6 +524,6 @@ public class Rectification {
                 ", Supplementary_punishments='" + Supplementary_punishments + '\'' +
                 ", fname='" + fname + '\'' +
                 ", endDate='" + endDate + '\'' +
-                '}';
+                '}'+list.size();
     }
 }

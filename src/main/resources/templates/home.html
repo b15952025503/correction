@@ -5,78 +5,126 @@
     <title>Title</title>
 
 
-    <link rel="stylesheet" href="/css/layui.css">
+    <link rel="stylesheet" href="/lib/layui/css/layui.css">
     <script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
-    <script src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script src="/lib/layui/layui.js" charset="utf-8"></script>
+    <script src="/js/echarts.min.js"></script>
 </head>
 <script>
 
     //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
     layui.use('element', function(){
         var element = layui.element;
-
         //…
     });
-
-    function showInfo(obj) {
-        var name=$(obj).find(":input").attr("name");
-
-        $("#dst").load("RectificationController/queryById?name="+name);
-        $("#dst").css('display','block');
-        $("#bg").css('display','block');
-        /*alert(dts)*/
-/*        $(obj).html($("#dst").html())*/;
-    }
-    function closeInfo(obj) {
-        var objhtml=$("obj").html("");
-        /*alert(objhtml)
-         $(obj).html(dts);*/
-    }
     $(function () {
-        $("#dst").click(function () {
-            $("#dst").css('display','none');
-            $("#bg").css('display','none');
+        $(".hideTs").click(function () {
+
+            if($("#rinfo").css("display")=='none')
+            {
+                $("#rinfo").fadeIn();
+                $("#main").removeClass("layui-col-md12").addClass("layui-col-md8")
+                $("#other").addClass("layui-col-md4")
+            }else{
+                $("#rinfo").fadeOut();
+
+                $("#main").removeClass("layui-col-md8").addClass("layui-col-md12")
+                $("#other").removeClass("layui-col-md4")
+            }
+
         })
     })
 
-    function pdf(obj) {
+   </script>
 
-        var rno=$(obj).parent().parent().find(":input").attr("name");
-      /*  layui.use('layer', function(){
-            var layer = layui.layer;
-            layer.msg('正在加载,请稍后!!!');
-        });*/
+<script>
 
-       window.location.href="pdf/preview?rno="+rno;
-    }
+
+    $(function () {
+        $.post("queryStruts",function (data) {
+        var myChart = echarts.init(document.getElementById('peozt'));
+        option = {
+            backgroundColor: '#2c343c',
+            title: {
+                text: '矫正人员状态统计',
+                left: 'center',
+                top: 20,
+                textStyle: {
+                    color: '#ccc'
+                }
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            visualMap: {
+                show: false,
+                min: 0,
+                max: 20,
+                inRange: {
+                    colorLightness: [0, 1]
+                }
+            },
+            series : [
+                {
+                    name:'统计信息',
+                    type:'pie',
+                    radius : '55%',
+                    center: ['50%', '50%'],
+                    data:data
+                    .sort(function (a, b) { return a.value - b.value; }),
+                    roseType: 'radius',
+                    label: {
+                        normal: {
+                            textStyle: {
+                                color: 'rgba(255, 255, 255, 0.3)'
+                            }
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            lineStyle: {
+                                color: 'rgba(255, 255, 255, 0.3)'
+                            },
+                            smooth: 0.2,
+                            length: 10,
+                            length2: 20
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: '#c23531',
+                            shadowBlur: 200,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    },
+
+                    animationType: 'scale',
+                    animationEasing: 'elasticOut',
+                    animationDelay: function (idx) {
+                        return Math.random() * 200;
+                    }
+                }
+            ]
+        };
+        myChart.setOption(option);
+    })
+    })
 </script>
 
-<style type="text/css">
-    #con{
-        margin-left:50px;
-        margin-top:40px;
-        position: relative;
-    }
-    #info{
-        position: relative;
-        top:8px;
-        left:80px;
-    }
 
-    #frm{
-        height: 550px;
-    }
+<style type="text/css">
+
+
+
+
     #rinfo{
         position: absolute;
-        right:-120px;
-        top:0px;
+        right:-110px;
+        top:-10px;
+
     }
-    .sp{
-        display: block;
-        width: 130px;
-        height: 120px;
-        float: left;
-    }
+
     .info1{
         width: 270px;
         float: left;
@@ -87,120 +135,93 @@
         float: left;
         height: 120px;
     }
-    #dst{
-        display: none;
-        position: absolute;
-        z-index: 99;
-        margin-left: 120px;
-        margin-top:180px;
-        color: #B2B2B2;
-        background: black;
-        opacity:0.7;
-    }
-    #bg{
-        position: absolute;
-        left:0px;
-        top:0px;
-        width: 100%;
-        height:100%;
-        background: rgba(0,0,0,0.5);
-        z-index:96;
-        display: none;
-    }
-    #dst span{
-        color:#B2B2B2;
-    }
-    #dst div{
-        color:#C2BE9E;
-    }
 
+
+#hideTs{
+    font-size: 40px;
+    background: #666;
+
+}
+
+    .bg{
+
+        border:1px solid #ccc;
+        width:230px;
+        height:200px;
+        background: content-box;
+        margin-right:20px;
+        margin-top:30px;
+        text-align: center;
+        color: #999;
+    }
 </style>
 
+
+
 <body>
-<div id="bg"></div>
-</i>
-<table id="dst" th:fragment="dst_refresh" >
-    <div class="sp" th:each="item :${dstInfo}">
-        <img th:src="${item.photo}" width="90" height="120" >
+<div class="layui-table-tool">
+    <div class="layui-table-tool-temp">
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-primary layui-btn-sm" >添加档案</button>
+            <button class="layui-btn layui-btn-primary layui-btn-sm" >查看档案</button>
+            <button class="layui-btn layui-btn-primary layui-btn-sm" >心理测试</button>
+            <button class="layui-btn layui-btn-primary layui-btn-sm" >风险评估</button>
+            <button class="layui-btn layui-btn-primary layui-btn-sm" >实时监控</button>
+            <button class="layui-btn layui-btn-primary layui-btn-sm" >考核信息</button>
+            <button class="layui-btn layui-btn-primary layui-btn-sm hideTs" >其他信息</button>
+        </div>
     </div>
-    <div class="info1" th:each="item :${dstInfo}">
-        <div>出生日期:<span th:text="${item.birthday}"></span></div>
-        <div>判决书号:<span th:text="${item.jNo}"></span></div>
-        <div>原判日期:<span th:text="${item.judgmentDate}"></span></div>
-        <div>执行类别:<span th:text="${item.pcname}"></span></div>
-        <div>居住地址:<span th:text="${item.address}"></span></div>
-        <div>犯罪事实:<span th:text="${item.context}"></span></div>
-    </div>
-    <div class="info2" th:each="item :${dstInfo}">
-        <div>入矫日期:<span th:text="${item.inAffair}"></span></div>
-        <div>罪名:<span th:text="${item.charges}"></span></div>
-        <div>附加刑:<span th:text="${item.Supplementary_punishments}"></span></div>
-        <div>矫正期限:<span th:text="${item.affairDate}"></span></div>
-        <div>户籍地址:<span th:text="${item.household_registration}"></span></div>
-    </div>
-</table>
+</div>
+
+
 
 
 
 </div>
     <div class="layui-container" id="con">
         <div class="layui-row">
-            <div class="layui-col-md8">
-                <form action="" method="post" id="frm">
-                    <fieldset class="layui-elem-field">
-                        <legend>矫正人员基本信息</legend>
-                     <input type="text" name="name" id="tj"  placeholder="请输入要查询的内容" autocomplete="off" class="layui-input"></span>
-                        <div class="layui-field-box">
-                    <table  lay-size="sm"  class="layui-table" id="table_refresh"    th:fragment="table_refresh">
-
-                        <thead>
-                        <tr>
-                            <th>姓名</th>
-                            <th>性别</th>
-                            <th>执行类别</th>
-                            <th>监管级别</th>
-                            <th>入矫日期</th>
-                            <th>矫正截止</th>
-                            <th>状态</th>
-                            <th>操作</th>
-                        </tr>
-                        </thead>
-
-                        <tbody th:each="it :${PageInfo}"  >
-                            <tr th:each="item :${it.list}" ondblclick="showInfo(this)" onmouseout="closeInfo(this)">
-                                <input type="hidden" th:name="${item.rno}"/>
-                            <td th:text="${item.rname}"></td>
-                            <td th:text="${item.sex}"></td>
-                            <td th:text="${item.pcname}"></td>
-                                <td th:text="${item.rgname}"></td>
-                                <td th:text="${item.inAffair}"></td>
-                                <td th:text="${item.endDate}"></td>
-                                <td th:text="${item.fname}"></td>
-                                <td>
-                                    <a onclick="pdf(this)" class="layui-btn layui-btn-primary layui-btn-sm">详细信息</a>
-                                    <button  type="button"class="layui-btn layui-btn-primary layui-btn-sm">修改</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                            <input  type="button" value="首页"  	class="layui-btn layui-btn-sm layui-btn-primary" onclick="page('first')"/>
-                            <input type="button" value="上一页"  class="layui-btn layui-btn-sm layui-btn-primary" onclick="page('sub')"/>
-                            <input type="button" value="下一页"  class="layui-btn layui-btn-sm layui-btn-primary" onclick="page('add')"/>
-                            <input type="button" value="末页"  	class="layui-btn layui-btn-sm layui-btn-primary" onclick="page('end')"/>
+            <div class="layui-col-md8" id="main">
+                <div class="layui-col-md4">
+                <div class="bg">
+                    <img src="/images/jk1.png" width="30px" height="30px"/>
+                    <div>正在监控人数</div>
+                </div>
+                    <div class="bg" id="jgjb">
+                      <div>
+                            <img src="/images/pg.png" width="30px" height="30px">
                         </div>
-                    </fieldset>
-
-                </form>
+                        <div>
+                            <img src="/images/kg.png" width="30px" height="30px">
+                        </div>
+                        <div>
+                            <img src="/images/yg.png" width="30px" height="30px">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md4">
+                <div class="bg">
+                    <img src="/images/jzry.png" width="30px" height="30px">
+                    <div>正在执行矫正人数</div>
+                </div>
+                    <div class="bg" id="peozt">状态做个统计</div>
+                </div>
+                <div class="layui-col-md4">
+                <div class="bg">
+                    <img src="/images/khtg.png" width="30px" height="30px"/>
+                <div>    考核通过人数百分比</div>
+                </div>
+                    <div class="bg">考核通过统计</div>
+                </div>
             </div>
-            <div class="layui-col-md4">
+            <div class="layui-col-md4" id="other">
                 <div id="rinfo">
 
                     <div class="layui-tab layui-tab-card">
                         <ul class="layui-tab-title">
                             <li class="layui-this">公告管理</li>
                             <li onclick="showLog()">日志记录</li>
-                            <li>角色定义</li>
                             <li>活动区域</li>
+                            <li> <i class="hideTs layui-icon  layui-icon-spread-left">&#xe66b;</i></li>
                         </ul>
                         <div class="layui-tab-content" style="height:500px; width:400px; overflow: auto;" >
                             <div class="layui-tab-item layui-show">
@@ -210,12 +231,13 @@
                                 </fieldset>
 
                                 <ul class="layui-timeline">
-                                    <li class="layui-timeline-item">
+                                    <li class="layui-timeline-item"  th:each="it:${announcements}">
                                         <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
                                         <div class="layui-timeline-content layui-text">
-                                            <div class="layui-timeline-title">2018年
-                                                我的测试内容
+                                            <div class="layui-timeline-title" th:text="${it.title}">
                                             </div>
+                                            <span th:text="${it.putdate}">
+                                            </span><span class="rname">发布人:李四</span>
                                         </div>
                                     </li>
                                     <li class="layui-timeline-item">
@@ -247,25 +269,15 @@
                                             <td><button class="layui-btn layui-btn-primary layui-btn-sm" onclick="showDetils(this)">详细信息</button></td>
                                         </tr>
                                     </tbody>
-<!--
-                                    <div th:each="it : ${logInfo}">
-                                        <div th:text="${it.context}"></div>
-                                    </div>-->
                                 </table>
 
                             </div>
                             <div class="layui-tab-item">3</div>
-                            <div class="layui-tab-item">4</div>
                         </div>
                     </div>
 
                 </div>
             </div>
-        </div>
-        <div>
-        <div class="layui-col-md3">1</div>
-        <div class="layui-col-md3">2</div>
-        <div class="layui-col-md3">3</div>
         </div>
     </div>
 
@@ -308,6 +320,5 @@
             //window.location.href="query?Num="+Num;
         };
     </script>
-
 </body>
 </html>

@@ -126,7 +126,7 @@
     <tr>
         <td rowspan="2">社会矫正期限:</td>
 
-        <td colspan="2">${(m.originalDate)!}</td>
+        <td colspan="2">${m.inAffair}</td>
 
         <td colspan="2">${m.endDate}</td>
         <td>判罚执行类别:</td>
