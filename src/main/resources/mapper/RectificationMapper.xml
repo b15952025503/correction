@@ -468,7 +468,7 @@
   <select id="queryAll" parameterType="string" resultType="map">
 
 
-select r.rno,r.phone,r.photo,r.rname,r.Former_name,r.idcard,r.sex,r.age,r.birthday,r.position,
+select r.rno,r.phone,r.photo,rg.icon,r.rname,r.Former_name,r.idcard,r.sex,r.age,r.birthday,r.position,
 r.Marital_status,r.Native_place,r.household_registration,r.address ,
 r.Active_area,e.name ename,p.name pname,pc.name pcname,rg.name rgname,tp.name tpname,cd.context,
 rn.family,rn.address paddress,rn.phone pphone,j.jNo,j.courtName,j.judgmentDate,j.originalDate,j.endDate,j.Supplementary_punishments,
@@ -486,13 +486,13 @@ join RectFlag rf on rf.id=r.flag
 where rname  like concat('%',#{param1},'%') or pc.name like concat('%',#{param1},'%')
 or rg.name like concat('%',#{param1},'%') or r.sex like concat('%',#{param1},'%')
 </if>
- order by j.inAffair asc
+ order by j.inAffair desc
   </select>
 
 
   <select id="queryById" parameterType="string" resultType="map">
 
-    select r.rno,r.phone,r.photo,r.rname,r.Former_name,r.idcard,r.sex,r.age,r.birthday,r.position,
+    select r.rno,r.phone,r.photo,rg.icon,r.rname,r.Former_name,r.idcard,r.sex,r.age,r.birthday,r.position,
     r.Marital_status,r.Native_place,r.household_registration,r.address ,
     r.Active_area,e.name ename,p.name pname,pc.name pcname,rg.name rgname,tp.name tpname,cd.context,
     rn.family,rn.address paddress,rn.phone pphone,j.jNo,j.courtName,j.judgmentDate,j.originalDate,j.endDate,j.Supplementary_punishments,
@@ -507,12 +507,12 @@ or rg.name like concat('%',#{param1},'%') or r.sex like concat('%',#{param1},'%'
     join judgment j on j.jNo=r.jNO
     join RectFlag rf on rf.id=r.flag
     where r.rno=#{param1}
-
+    order by j.inAffair desc
   </select>
   
   
   <select id="queryInfo" resultType="map">
-    select r.rno,r.phone,r.photo,r.rname,r.Former_name,r.idcard,r.sex,r.age,r.birthday,r.position,
+    select r.rno,r.phone,r.photo,rg.icon,r.rname,r.Former_name,r.idcard,r.sex,r.age,r.birthday,r.position,
 r.Marital_status,r.Native_place,r.household_registration,r.address ,
 r.Active_area,e.name ename,p.name pname,pc.name pcname,rg.name rgname,tp.name tpname,cd.context,
 rn.family,rn.address paddress,rn.phone pphone,j.jNo,j.courtName,j.judgmentDate,j.originalDate,j.endDate,j.Supplementary_punishments,
@@ -526,5 +526,6 @@ join corpus_delicti cd on r.rNO=cd.rNO
 join relation rn on r.rNo=rn.rNO
 join judgment j on j.jNo=r.jNO
 join RectFlag rf on rf.id=r.flag
+order by j.inAffair desc
   </select>
 </mapper>

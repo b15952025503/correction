@@ -1,11 +1,8 @@
 package com.community.demo.controller;
 
 
-import com.community.demo.dao.AuthorityManagementMapper;
-import com.community.demo.dao.RectificationMapper;
-import com.community.demo.entity.AuthorityManagement;
-import com.community.demo.entity.AuthorityManagementExample;
-import com.community.demo.entity.Rectification;
+import com.community.demo.dao.*;
+import com.community.demo.entity.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +22,18 @@ import java.util.Map;
 public class Home {
     @Autowired
     AuthorityManagementMapper am;
+
+    @Autowired
+    AnnouncementMapper anm;
+
     @Autowired
     RectificationMapper rm;
+
+    @Autowired
+    PerformCategoryMapper pcm;
+
+    @Autowired
+    RegulatoryMapper rgm;
     //添加权限信息到model内
     @RequestMapping("/t1")
     public String t1(Model model) {
@@ -44,6 +51,12 @@ public class Home {
         model.addAttribute("list",all);
         return "index";
     }
+
+    /**
+     * 主页面
+     * @param model
+     * @return
+     */
     @RequestMapping("index.html")
     public String index(Model model) {
         AuthorityManagement all = am.findAll();
@@ -51,24 +64,36 @@ public class Home {
         return "index";
     }
     Integer totalPage;
-    // 查询所有犯人信息
+    /**
+     *  查询所有犯人信息
+      */
     @RequestMapping("home.html")
     public String RectificationQuery(@RequestParam(value="pn",defaultValue="1") Integer pn, Model model){
-
         PageHelper.startPage(pn,10);
         List<Map<String, Rectification>> maps = rm.queryAll(null);
-        System.out.println(maps);
+        List<Announcement> announcements = anm.selectByExample(null);
         PageInfo<Map<String, Rectification>> page=new PageInfo<Map<String, Rectification>>(maps);
+        List<Map<String, Object>> map1 = rgm.queryRG();
+        System.out.println(map1);
+        model.addAttribute("jgjb",map1);
         model.addAttribute("PageInfo",page);
+        model.addAttribute("announcements",announcements);
+        List<PerformCategory> performCategories = pcm.selectByExample(null);
+        model.addAttribute("performCategories",performCategories);
         totalPage=page.getPages();
-        return  "home";
+        return "home";
     }
     public Integer pn=1;
-    //分页查询
+
+    /**
+     *分页查询
+     * @param Num
+     * @param model
+     * @param name
+     * @return
+     */
     @RequestMapping("query")
     public String queryAll(String Num,Model model,String name){
-
-
         if(Num!=null){
             if(Num.equals("add")){
                 ++pn;
@@ -83,14 +108,67 @@ public class Home {
                 pn=totalPage;
             }
         }
-        System.out.println(pn);
         PageHelper.startPage(pn,10 );
         List<Map<String, Rectification>> maps = rm.queryAll(name);
-        System.out.println(maps);
         PageInfo<Map<String, Rectification>> page=new PageInfo<Map<String, Rectification>>(maps);
         model.addAttribute("PageInfo",page);
 
-        return "home::table_refresh";
+        return "archivesQuery::table_refresh";
     }
+
+
+    /**
+     * 集合修改
+     * @param l  集合
+     * @return
+     */
+    @RequestMapping("update")
+    public String update(Rectification l){
+        for(Rectification r:l.getList()){
+            System.out.println(r.getRno()+r.getSex()+r.getPcid()+r.getRid());
+            rm.updateByPrimaryKeySelective(r);
+        }
+        return "redirect:archivesQuery";
+    }
+
+    @RequestMapping("login")
+    @ResponseBody
+    public String login(){
+        return "验证成功";
+    }
+
+    /**
+     * 档案查询
+     * @param pn
+     * @param model
+     * @return
+     */
+    @RequestMapping("archivesQuery")
+    public String archivesQuery(@RequestParam(value="pn",defaultValue="1") Integer pn, Model model){
+        PageHelper.startPage(pn,10);
+        List<Map<String, Rectification>> maps = rm.queryAll(null);
+        List<Announcement> announcements = anm.selectByExample(null);
+        PageInfo<Map<String, Rectification>> page=new PageInfo<Map<String, Rectification>>(maps);
+        model.addAttribute("PageInfo",page);
+        model.addAttribute("announcements",announcements);
+        List<PerformCategory> performCategories = pcm.selectByExample(null);
+        model.addAttribute("performCategories",performCategories);
+        totalPage=page.getPages();
+        return "archivesQuery";
+    }
+
+    /**
+     * 查询矫正人员状态信息
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("queryStruts")
+    public List queryStruts(){
+        List<Map<String, Object>> struts = rm.queryStruts();
+        return struts;
+    }
+
+
+
 
 }

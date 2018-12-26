@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+    <link rel="stylesheet" href="/lib/layui/css/layui.css">
+    <script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/lib/layui/layui.js" charset="utf-8"></script>
+
+</head>
+<script>
+
+
+
+
+    //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function(){
+        var element = layui.element;
+
+        //…
+    });
+
+    function showInfo(obj) {
+        var name=$(obj).find(":input").attr("name");
+
+        $("#dst").load("RectificationController/queryById?name="+name);
+        $("#dst").css('display','block');
+        $("#bg").css('display','block');
+        /*alert(dts)*/
+        /*        $(obj).html($("#dst").html())*/;
+    }
+    function closeInfo(obj) {
+        var objhtml=$("obj").html("");
+        /*alert(objhtml)
+         $(obj).html(dts);*/
+    }
+    $(function () {
+        $("#dst").click(function () {
+            $("#dst").css('display','none');
+            $("#bg").css('display','none');
+        })
+    })
+
+    function pdf(obj) {
+        layui.use('layer', function(){
+            var layer = layui.layer;
+            layer.msg('正在加载,请稍后!!!');
+        });
+        var rno=$(obj).parent().parent().find(":input").attr("name");
+        window.location.href="pdf/preview?rno="+rno;
+    }
+
+
+
+    var i=0;
+    function allIsable(obj){
+        var rno=$(obj).parent().parent().find(":input");
+        rno.attr("name","list["+i+"].rno");
+        var sexobj=$(obj).parent().parent().children("td").eq(1);
+        var sex=$(obj).parent().parent().children("td").eq(1).html();
+        if(sex=='男'){
+            sexobj.html("<select name='list["+i+"].sex' class='sex'> <option value='男' selected='true'>" +
+                "男" +
+                "</option><option value='女' >女</option>" +
+                "</select>")
+        }else {
+            sexobj.html("<select name='list["+i+"].sex'  class='sex'> <option value='男'>" +
+                "男" +
+                "</option><option value='女' selected='true' >女</option>" +
+                "</select>")
+        }
+
+        var pcInfo=$(obj).parent().parent().children("td").eq(2);
+        var pc=pcInfo.html();
+        if(pc=='被判处管制'){
+            pcInfo.html("<select name='list["+i+"].pcid'> <option value='1' selected='true'>被判处管制</option>" +
+                "<option value='2'>宣告缓刑</option>" +
+                "<option value='3'>裁定假释</option>" +
+                "<option value='4'>暂予监外执行</option>" +
+                "</select>");
+        }else if(pc=='宣告缓刑'){
+            pcInfo.html("<select name='list["+i+"].pcid'> <option value='1'>被判处管制</option>" +
+                "<option value='2'  selected='true'>宣告缓刑</option>" +
+                "<option value='3'>裁定假释</option>" +
+                "<option value='4'>暂予监外执行</option>" +
+                "</select>");
+        }else if(pc=='裁定假释'){
+            pcInfo.html("<select name='list["+i+"].pcid'> <option value='1'>被判处管制</option>" +
+                "<option value='2' >宣告缓刑</option>" +
+                "<option value='3' selected='true'>裁定假释</option>" +
+                "<option value='4'>暂予监外执行</option>" +
+                "</select>");
+        }else if(pc=='暂予监外执行'){
+            pcInfo.html("<select name='list["+i+"].pcid'> <option value='1'>被判处管制</option>" +
+                "<option value='2' >宣告缓刑</option>" +
+                "<option value='3' >裁定假释</option>" +
+                "<option value='4' selected='true'>暂予监外执行</option>" +
+                "</select>");
+        }
+        var reguInfo=$(obj).parent().parent().children("td").eq(3);
+        var regu=reguInfo.html();
+        if(regu=="严管"){
+            reguInfo.html("<select name='list["+i+"].rid'>" +
+                "<option value='1' selected='true'>严管</option>" +
+                "<option value='2'>普管</option>" +
+                "<option value='3'>宽管</option>" +
+                "</select>")
+        }else if(regu=="普管"){
+            reguInfo.html("<select  name='list["+i+"].rid'>" +
+                "<option value='1' >严管</option>" +
+                "<option value='2' selected='true'>普管</option>" +
+                "<option value='3'>宽管</option>" +
+                "</select>")
+        } else if(regu=="宽管"){
+            reguInfo.html("<select  name='list["+i+"].rid'>" +
+                "<option value='1' >严管</option>" +
+                "<option value='2' >普管</option>" +
+                "<option value='3'selected='true'>宽管</option>" +
+                "</select>")
+        }
+
+
+        var flagInfo=$(obj).parent().parent().children("td").eq(6);
+        flag=flagInfo.html();
+        if(flag=='期满'){
+            flagInfo.html("<select name='list["+i+"].flag'>" +
+                "<option value='1' selected='selected'>期满</option>" +
+                "<option value='2'>死亡</option>" +
+                "<option value='3'>迁居</option>" +
+                "<option value='4'>逃离</option>" +
+                "<option value='5'>收押</option>" +
+                "<option value='6'>失踪</option>" +
+                "<option value='7'>其他</option>" +
+                " </select>")
+        }else if(flag=='死亡'){
+            flagInfo.html("<select name='list["+i+"].flag'>" +
+                "<option value='1' >期满</option>" +
+                "<option value='2' selected='selected'>死亡</option>" +
+                "<option value='3'>迁居</option>" +
+                "<option value='4'>逃离</option>" +
+                "<option value='5'>收押</option>" +
+                "<option value='6'>失踪</option>" +
+                "<option value='7'>其他</option>" +
+                " </select>")
+        }else if(flag=='迁居'){
+            flagInfo.html("<select name='list["+i+"].flag'>" +
+                "<option value='1' >期满</option>" +
+                "<option value='2' >死亡</option>" +
+                "<option value='3' selected='selected'>迁居</option>" +
+                "<option value='4'>逃离</option>" +
+                "<option value='5'>收押</option>" +
+                "<option value='6'>失踪</option>" +
+                "<option value='7'>其他</option>" +
+                " </select>")
+        } else if(flag=='逃离'){
+            flagInfo.html("<select name='list["+i+"].flag'>" +
+                "<option value='1' >期满</option>" +
+                "<option value='2' >死亡</option>" +
+                "<option value='3' >迁居</option>" +
+                "<option value='4' selected='selected'>逃离</option>" +
+                "<option value='5'>收押</option>" +
+                "<option value='6'>失踪</option>" +
+                "<option value='7'>其他</option>" +
+                " </select>")
+        } else if(flag=='收押'){
+            flagInfo.html("<select name='list["+i+"].flag'>" +
+                "<option value='1' >期满</option>" +
+                "<option value='2' >死亡</option>" +
+                "<option value='3' >迁居</option>" +
+                "<option value='4' >逃离</option>" +
+                "<option value='5' selected='selected'>收押</option>" +
+                "<option value='6'>失踪</option>" +
+                "<option value='7'>其他</option>" +
+                " </select>")
+        }else if(flag=='失踪'){
+            flagInfo.html("<select name='list["+i+"].flag'>" +
+                "<option value='1' >期满</option>" +
+                "<option value='2' >死亡</option>" +
+                "<option value='3' >迁居</option>" +
+                "<option value='4' >逃离</option>" +
+                "<option value='5' >收押</option>" +
+                "<option value='6' selected='selected'>失踪</option>" +
+                "<option value='7'>其他</option>" +
+                " </select>")
+        }else{
+            flagInfo.html("<select name='list["+i+"].flag'>" +
+                "<option value='1' >期满</option>" +
+                "<option value='2' >死亡</option>" +
+                "<option value='3' >迁居</option>" +
+                "<option value='4' >逃离</option>" +
+                "<option value='5' >收押</option>" +
+                "<option value='6'>失踪</option>" +
+                "<option value='7'  selected='selected'>其他</option>" +
+                " </select>")
+        }
+        i=i+1;
+    }
+
+
+    $(function () {
+        $("#save").click(function () {
+            layui.use('layer', function(){
+                var layer = layui.layer;
+                layer.confirm('确定要修改吗？', {
+                    btn: ['确定', '取消'] //可以无限个按钮
+                    ,
+                }, function(index, layero){
+                    $("#frm").submit();
+                }, function(index){
+
+                });
+            });
+        })
+
+        $("#cancel").click(function () {
+            window.location.reload();
+        })
+
+        $(".fbrw").click(function () {
+            var rno = $(this).parent().find(":input").attr("name");
+            layui.use('layer', function () {
+                var layer = layui.layer;
+
+            })
+        })
+    })
+
+
+
+</script>
+
+<style type="text/css">
+    #con{
+        margin-left:50px;
+        margin-top:40px;
+        position: relative;
+        width:1000px;
+    }
+    #info{
+        position: relative;
+        top:8px;
+        left:80px;
+    }
+
+    #frm{
+        height: 580px;
+        width: 1000px;
+        text-align: center;
+    }
+    #frm th{
+        text-align: center;
+    }
+    #rinfo{
+        position: absolute;
+        right:-140px;
+        top:0px;
+    }
+    .sp{
+        display: block;
+        width: 130px;
+        height: 120px;
+        float: left;
+    }
+    .info1{
+        width: 270px;
+        float: left;
+        height: 120px;
+    }
+    .info2{
+        width: 270px;
+        float: left;
+        height: 120px;
+    }
+    .layui-field-box{
+
+    }
+    #dst{
+        display: none;
+        position: absolute;
+        z-index: 99;
+        margin-left: 300px;
+        margin-top:180px;
+        color: #B2B2B2;
+        background: black;
+        opacity:0.7;
+    }
+    #bg{
+        position: absolute;
+        left:0px;
+        top:0px;
+        width: 100%;
+        height:100%;
+        background: rgba(0,0,0,0.5);
+        z-index:96;
+        display: none;
+    }
+    #dst span{
+        color:#B2B2B2;
+    }
+    #dst div{
+        color:#C2BE9E;
+    }
+    .rname{
+        position: absolute;
+        display: block;
+        left:280px;
+        top:32px;
+    }
+    .sex{
+        padding: 0px;
+        margin: 0px;
+        text-align: center;
+    }
+    .rnameInfo{
+        width: 50px;
+    }
+    #pageStyle{
+        position: relative;
+        display: block;
+        width:260px;
+        height: 30px;
+    }
+    #save{
+        position: absolute;
+        top:532px;
+        left:855px;
+    }
+    #cancel{
+        position: absolute;
+        top:532px;
+        left:910px;
+    }
+</style>
+
+
+<body>
+
+<div id="bg"></div>
+</i>
+<table id="dst" th:fragment="dst_refresh" >
+    <div class="sp" th:each="item :${dstInfo}">
+        <img th:src="${item.photo}" width="90" height="120" >
+    </div>
+    <div class="info1" th:each="item :${dstInfo}">
+        <div>出生日期:<span th:text="${item.birthday}"></span></div>
+        <div>判决书号:<span th:text="${item.jNo}"></span></div>
+        <div>原判日期:<span th:text="${item.judgmentDate}"></span></div>
+        <div>执行类别:<span th:text="${item.pcname}"></span></div>
+        <div>居住地址:<span th:text="${item.address}"></span></div>
+        <div>犯罪事实:<span th:text="${item.context}"></span></div>
+    </div>
+    <div class="info2" th:each="item :${dstInfo}">
+        <div>入矫日期:<span th:text="${item.inAffair}"></span></div>
+        <div>罪名:<span th:text="${item.charges}"></span></div>
+        <div>附加刑:<span th:text="${item.Supplementary_punishments}"></span></div>
+        <div>矫正期限:<span th:text="${item.affairDate}"></span></div>
+        <div>户籍地址:<span th:text="${item.household_registration}"></span></div>
+    </div>
+</table>
+
+
+
+</div>
+<div class="layui-container" id="con">
+            <form action="/update" method="post" id="frm">
+                <fieldset class="layui-elem-field">
+                    <legend>矫正人员基本信息</legend>
+
+                    <span>
+                     <input type="text" name="name" id="tj"  placeholder="请输入要查询的内容" autocomplete="off" class="layui-input"></span>
+                    <div class="layui-field-box">
+                        <table  lay-size="sm" width="900px" class="layui-table" id="table_refresh"    th:fragment="table_refresh">
+
+                            <thead>
+                            <tr>
+                                <th>姓名</th>
+                                <th>性别</th>
+                                <th>执行类别</th>
+                                <th>监管级别</th>
+                                <th>入矫日期</th>
+                                <th>矫正截止</th>
+                                <th>考核信息</th>
+                                <th>监控状态</th>
+                                <th>发布任务</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody th:each="it :${PageInfo}" >
+                            <tr th:each="item :${it.list}" ondblclick="showInfo(this)" onmouseout="closeInfo(this)">
+                                <input type="hidden" th:value="${item.rno}" th:name="${item.rno}"/>
+                                <td th:text="${item.rname}"  contenteditable="false" name="rname" onclick="isable(this)"></td>
+                                <td th:text="${item.sex}" contenteditable="false" ondbclick="sexIsable(this)"></td>
+                                <td th:text="${item.pcname}"></td>
+                                <td  th:text="${item.rgname}"></td>
+                                <td  th:text="${item.inAffair}"></td>
+                                <td  th:text="${item.endDate}"></td>
+                                <td><img src="/images/kh.png" width="30px" height="30px"></td>
+                                <td class="jkzt"><img th:src="${item.icon}" width="30px" height="30px"></td>
+                                <td class="fbrw"><img src="/images/fbrw.png" width="30px" height="30px"></td>
+                                <td  th:text="${item.fname}"></td>
+                                <td>
+                                    <a onclick="pdf(this)" class="layui-btn layui-btn-primary layui-btn-sm">
+                                        <i class="layui-icon layui-icon-file">&#xe621;</i>
+                                        详细信息</a>
+                                    <button  onclick="allIsable(this)" type="button" class="layui-btn layui-btn-primary layui-btn-sm">
+                                        <i class="layui-icon layui-icon-edit">&#xe642;</i>修改</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div id="pageStyle">
+                            <input  type="button" value="首页"  	class="layui-btn layui-btn-sm layui-btn-primary" onclick="page('first')"/>
+                            <input type="button" value="上一页"  class="layui-btn layui-btn-sm layui-btn-primary" onclick="page('sub')"/>
+                            <input type="button" value="下一页"  class="layui-btn layui-btn-sm layui-btn-primary" onclick="page('add')"/>
+                            <input type="button" value="末页"  	class="layui-btn layui-btn-sm layui-btn-primary" onclick="page('end')"/>
+
+                        </div>
+
+                    </div>
+                    <button type="button"   id='save' class="layui-btn layui-btn-radius layui-btn-normal">保存</button>
+                    <button type="button"   id='cancel' class="layui-btn layui-btn-radius layui-btn-normal">取消</button>
+
+                </fieldset>
+
+            </form>
+</div>
+
+<script type="text/javascript">
+    //条件查询
+    $("#tj").keyup(function () {
+        var name=$("#tj").val();
+        $('#table_refresh').load("query?name="+name);
+        //$.post("query?name="+name)
+    })
+</script>
+<script type="text/javascript">
+    //分页
+    function page(obj){
+        var Num=obj;
+        $('#table_refresh').load("query?Num="+Num);
+        //window.location.href="query?Num="+Num;
+    };
+</script>
+</body>
+</html>

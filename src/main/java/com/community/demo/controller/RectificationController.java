@@ -41,7 +41,7 @@ public class RectificationController {
         List<Map<String, Rectification>> maps = rm.queryById(name);
         model.addAttribute("dstInfo",maps);
         System.out.println(maps);
-        return "home::dst_refresh";
+        return "archivesQuery::dst_refresh";
     }
 
 
