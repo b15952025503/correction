@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.community.demo.dao.CorrectivemeasureMapper">
+  <resultMap id="BaseResultMap" type="com.community.demo.entity.Correctivemeasure">
+    <id column="correctivid" jdbcType="VARCHAR" property="correctivid" />
+    <result column="rNO" jdbcType="VARCHAR" property="rno" />
+    <result column="correctivdate" jdbcType="DATE" property="correctivdate" />
+    <result column="correctivdatetwo" jdbcType="DATE" property="correctivdatetwo" />
+    <result column="correctivname" jdbcType="VARCHAR" property="correctivname" />
+    <result column="correctivresult" jdbcType="VARCHAR" property="correctivresult" />
+    <result column="flag" jdbcType="INTEGER" property="flag" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    correctivid, rNO, correctivdate, correctivdatetwo, correctivname, correctivresult, 
+    flag
+  </sql>
+  <select id="selectByExample" parameterType="com.community.demo.entity.CorrectivemeasureExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from correctivemeasure
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from correctivemeasure
+    where correctivid = #{correctivid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from correctivemeasure
+    where correctivid = #{correctivid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.community.demo.entity.CorrectivemeasureExample">
+    delete from correctivemeasure
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.community.demo.entity.Correctivemeasure">
+    insert into correctivemeasure (correctivid, rNO, correctivdate, 
+      correctivdatetwo, correctivname, correctivresult, 
+      flag)
+    values (#{correctivid,jdbcType=VARCHAR}, #{rno,jdbcType=VARCHAR}, #{correctivdate,jdbcType=DATE}, 
+      #{correctivdatetwo,jdbcType=DATE}, #{correctivname,jdbcType=VARCHAR}, #{correctivresult,jdbcType=VARCHAR}, 
+      #{flag,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.community.demo.entity.Correctivemeasure">
+    insert into correctivemeasure
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="correctivid != null">
+        correctivid,
+      </if>
+      <if test="rno != null">
+        rNO,
+      </if>
+      <if test="correctivdate != null">
+        correctivdate,
+      </if>
+      <if test="correctivdatetwo != null">
+        correctivdatetwo,
+      </if>
+      <if test="correctivname != null">
+        correctivname,
+      </if>
+      <if test="correctivresult != null">
+        correctivresult,
+      </if>
+      <if test="flag != null">
+        flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="correctivid != null">
+        #{correctivid,jdbcType=VARCHAR},
+      </if>
+      <if test="rno != null">
+        #{rno,jdbcType=VARCHAR},
+      </if>
+      <if test="correctivdate != null">
+        #{correctivdate,jdbcType=DATE},
+      </if>
+      <if test="correctivdatetwo != null">
+        #{correctivdatetwo,jdbcType=DATE},
+      </if>
+      <if test="correctivname != null">
+        #{correctivname,jdbcType=VARCHAR},
+      </if>
+      <if test="correctivresult != null">
+        #{correctivresult,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null">
+        #{flag,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.community.demo.entity.CorrectivemeasureExample" resultType="java.lang.Long">
+    select count(*) from correctivemeasure
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update correctivemeasure
+    <set>
+      <if test="record.correctivid != null">
+        correctivid = #{record.correctivid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rno != null">
+        rNO = #{record.rno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.correctivdate != null">
+        correctivdate = #{record.correctivdate,jdbcType=DATE},
+      </if>
+      <if test="record.correctivdatetwo != null">
+        correctivdatetwo = #{record.correctivdatetwo,jdbcType=DATE},
+      </if>
+      <if test="record.correctivname != null">
+        correctivname = #{record.correctivname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.correctivresult != null">
+        correctivresult = #{record.correctivresult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.flag != null">
+        flag = #{record.flag,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update correctivemeasure
+    set correctivid = #{record.correctivid,jdbcType=VARCHAR},
+      rNO = #{record.rno,jdbcType=VARCHAR},
+      correctivdate = #{record.correctivdate,jdbcType=DATE},
+      correctivdatetwo = #{record.correctivdatetwo,jdbcType=DATE},
+      correctivname = #{record.correctivname,jdbcType=VARCHAR},
+      correctivresult = #{record.correctivresult,jdbcType=VARCHAR},
+      flag = #{record.flag,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.community.demo.entity.Correctivemeasure">
+    update correctivemeasure
+    <set>
+      <if test="rno != null">
+        rNO = #{rno,jdbcType=VARCHAR},
+      </if>
+      <if test="correctivdate != null">
+        correctivdate = #{correctivdate,jdbcType=DATE},
+      </if>
+      <if test="correctivdatetwo != null">
+        correctivdatetwo = #{correctivdatetwo,jdbcType=DATE},
+      </if>
+      <if test="correctivname != null">
+        correctivname = #{correctivname,jdbcType=VARCHAR},
+      </if>
+      <if test="correctivresult != null">
+        correctivresult = #{correctivresult,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null">
+        flag = #{flag,jdbcType=INTEGER},
+      </if>
+    </set>
+    where correctivid = #{correctivid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.community.demo.entity.Correctivemeasure">
+    update correctivemeasure
+    set rNO = #{rno,jdbcType=VARCHAR},
+      correctivdate = #{correctivdate,jdbcType=DATE},
+      correctivdatetwo = #{correctivdatetwo,jdbcType=DATE},
+      correctivname = #{correctivname,jdbcType=VARCHAR},
+      correctivresult = #{correctivresult,jdbcType=VARCHAR},
+      flag = #{flag,jdbcType=INTEGER}
+    where correctivid = #{correctivid,jdbcType=VARCHAR}
+  </update>
+</mapper>

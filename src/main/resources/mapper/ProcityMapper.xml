@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.community.demo.dao.ProcityMapper">
+  <resultMap id="BaseResultMap" type="com.community.demo.entity.Procity">
+    <id column="pcCode" jdbcType="VARCHAR" property="pccode" />
+    <result column="pcName" jdbcType="VARCHAR" property="pcname" />
+    <result column="parentCode" jdbcType="VARCHAR" property="parentcode" />
+    <result column="pcType" jdbcType="VARCHAR" property="pctype" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    pcCode, pcName, parentCode, pcType
+  </sql>
+  <select id="selectByExample" parameterType="com.community.demo.entity.ProcityExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from procity
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from procity
+    where pcCode = #{pccode,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from procity
+    where pcCode = #{pccode,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.community.demo.entity.ProcityExample">
+    delete from procity
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.community.demo.entity.Procity">
+    insert into procity (pcCode, pcName, parentCode, 
+      pcType)
+    values (#{pccode,jdbcType=VARCHAR}, #{pcname,jdbcType=VARCHAR}, #{parentcode,jdbcType=VARCHAR}, 
+      #{pctype,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.community.demo.entity.Procity">
+    insert into procity
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pccode != null">
+        pcCode,
+      </if>
+      <if test="pcname != null">
+        pcName,
+      </if>
+      <if test="parentcode != null">
+        parentCode,
+      </if>
+      <if test="pctype != null">
+        pcType,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pccode != null">
+        #{pccode,jdbcType=VARCHAR},
+      </if>
+      <if test="pcname != null">
+        #{pcname,jdbcType=VARCHAR},
+      </if>
+      <if test="parentcode != null">
+        #{parentcode,jdbcType=VARCHAR},
+      </if>
+      <if test="pctype != null">
+        #{pctype,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.community.demo.entity.ProcityExample" resultType="java.lang.Long">
+    select count(*) from procity
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update procity
+    <set>
+      <if test="record.pccode != null">
+        pcCode = #{record.pccode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pcname != null">
+        pcName = #{record.pcname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentcode != null">
+        parentCode = #{record.parentcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pctype != null">
+        pcType = #{record.pctype,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update procity
+    set pcCode = #{record.pccode,jdbcType=VARCHAR},
+      pcName = #{record.pcname,jdbcType=VARCHAR},
+      parentCode = #{record.parentcode,jdbcType=VARCHAR},
+      pcType = #{record.pctype,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.community.demo.entity.Procity">
+    update procity
+    <set>
+      <if test="pcname != null">
+        pcName = #{pcname,jdbcType=VARCHAR},
+      </if>
+      <if test="parentcode != null">
+        parentCode = #{parentcode,jdbcType=VARCHAR},
+      </if>
+      <if test="pctype != null">
+        pcType = #{pctype,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where pcCode = #{pccode,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.community.demo.entity.Procity">
+    update procity
+    set pcName = #{pcname,jdbcType=VARCHAR},
+      parentCode = #{parentcode,jdbcType=VARCHAR},
+      pcType = #{pctype,jdbcType=VARCHAR}
+    where pcCode = #{pccode,jdbcType=VARCHAR}
+  </update>
+  <!--查询市-->
+  <select id="selectparentCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from procity
+    where parentCode = #{parentCode,jdbcType=VARCHAR}
+  </select>
+
+</mapper>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.community.demo.dao.CorpusDelictiMapper">
+  <resultMap id="BaseResultMap" type="com.community.demo.entity.CorpusDelicti">
+    <id column="cd" jdbcType="INTEGER" property="cd" />
+    <result column="rNO" jdbcType="VARCHAR" property="rno" />
+    <result column="context" jdbcType="VARCHAR" property="context" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    cd, rNO, context
+  </sql>
+  <select id="selectByExample" parameterType="com.community.demo.entity.CorpusDelictiExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from corpus_delicti
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from corpus_delicti
+    where cd = #{cd,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from corpus_delicti
+    where cd = #{cd,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.community.demo.entity.CorpusDelictiExample">
+    delete from corpus_delicti
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.community.demo.entity.CorpusDelicti">
+    insert into corpus_delicti (cd, rNO, context
+      )
+    values (#{cd,jdbcType=INTEGER}, #{rno,jdbcType=VARCHAR}, #{context,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.community.demo.entity.CorpusDelicti">
+    insert into corpus_delicti
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cd != null">
+        cd,
+      </if>
+      <if test="rno != null">
+        rNO,
+      </if>
+      <if test="context != null">
+        context,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cd != null">
+        #{cd,jdbcType=INTEGER},
+      </if>
+      <if test="rno != null">
+        #{rno,jdbcType=VARCHAR},
+      </if>
+      <if test="context != null">
+        #{context,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.community.demo.entity.CorpusDelictiExample" resultType="java.lang.Long">
+    select count(*) from corpus_delicti
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update corpus_delicti
+    <set>
+      <if test="record.cd != null">
+        cd = #{record.cd,jdbcType=INTEGER},
+      </if>
+      <if test="record.rno != null">
+        rNO = #{record.rno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.context != null">
+        context = #{record.context,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update corpus_delicti
+    set cd = #{record.cd,jdbcType=INTEGER},
+      rNO = #{record.rno,jdbcType=VARCHAR},
+      context = #{record.context,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.community.demo.entity.CorpusDelicti">
+    update corpus_delicti
+    <set>
+      <if test="rno != null">
+        rNO = #{rno,jdbcType=VARCHAR},
+      </if>
+      <if test="context != null">
+        context = #{context,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where cd = #{cd,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.community.demo.entity.CorpusDelicti">
+    update corpus_delicti
+    set rNO = #{rno,jdbcType=VARCHAR},
+      context = #{context,jdbcType=VARCHAR}
+    where cd = #{cd,jdbcType=INTEGER}
+  </update>
+</mapper>

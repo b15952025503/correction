@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.community.demo.dao.JudgmentMapper">
+  <resultMap id="BaseResultMap" type="com.community.demo.entity.Judgment">
+    <id column="jNo" jdbcType="VARCHAR" property="jno" />
+    <result column="courtName" jdbcType="VARCHAR" property="courtname" />
+    <result column="judgmentDate" jdbcType="DATE" property="judgmentdate" />
+    <result column="originalDate" jdbcType="DATE" property="originaldate" />
+    <result column="endDate" jdbcType="DATE" property="enddate" />
+    <result column="Supplementary_punishments" jdbcType="VARCHAR" property="supplementaryPunishments" />
+    <result column="charges" jdbcType="VARCHAR" property="charges" />
+    <result column="Verdict_penalty" jdbcType="VARCHAR" property="verdictPenalty" />
+    <result column="executionDate" jdbcType="DATE" property="executiondate" />
+    <result column="inAffair" jdbcType="DATE" property="inaffair" />
+    <result column="affairDate" jdbcType="VARCHAR" property="affairdate" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    jNo, courtName, judgmentDate, originalDate, endDate, Supplementary_punishments, charges, 
+    Verdict_penalty, executionDate, inAffair, affairDate
+  </sql>
+  <select id="selectByExample" parameterType="com.community.demo.entity.JudgmentExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from judgment
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from judgment
+    where jNo = #{jno,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from judgment
+    where jNo = #{jno,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.community.demo.entity.JudgmentExample">
+    delete from judgment
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.community.demo.entity.Judgment">
+    insert into judgment (jNo, courtName, judgmentDate, 
+      originalDate, endDate, Supplementary_punishments, 
+      charges, Verdict_penalty, executionDate, 
+      inAffair, affairDate)
+    values (#{jno,jdbcType=VARCHAR}, #{courtname,jdbcType=VARCHAR}, #{judgmentdate,jdbcType=DATE}, 
+      #{originaldate,jdbcType=DATE}, #{enddate,jdbcType=DATE}, #{supplementaryPunishments,jdbcType=VARCHAR}, 
+      #{charges,jdbcType=VARCHAR}, #{verdictPenalty,jdbcType=VARCHAR}, #{executiondate,jdbcType=DATE}, 
+      #{inaffair,jdbcType=DATE}, #{affairdate,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.community.demo.entity.Judgment">
+    insert into judgment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="jno != null">
+        jNo,
+      </if>
+      <if test="courtname != null">
+        courtName,
+      </if>
+      <if test="judgmentdate != null">
+        judgmentDate,
+      </if>
+      <if test="originaldate != null">
+        originalDate,
+      </if>
+      <if test="enddate != null">
+        endDate,
+      </if>
+      <if test="supplementaryPunishments != null">
+        Supplementary_punishments,
+      </if>
+      <if test="charges != null">
+        charges,
+      </if>
+      <if test="verdictPenalty != null">
+        Verdict_penalty,
+      </if>
+      <if test="executiondate != null">
+        executionDate,
+      </if>
+      <if test="inaffair != null">
+        inAffair,
+      </if>
+      <if test="affairdate != null">
+        affairDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="jno != null">
+        #{jno,jdbcType=VARCHAR},
+      </if>
+      <if test="courtname != null">
+        #{courtname,jdbcType=VARCHAR},
+      </if>
+      <if test="judgmentdate != null">
+        #{judgmentdate,jdbcType=DATE},
+      </if>
+      <if test="originaldate != null">
+        #{originaldate,jdbcType=DATE},
+      </if>
+      <if test="enddate != null">
+        #{enddate,jdbcType=DATE},
+      </if>
+      <if test="supplementaryPunishments != null">
+        #{supplementaryPunishments,jdbcType=VARCHAR},
+      </if>
+      <if test="charges != null">
+        #{charges,jdbcType=VARCHAR},
+      </if>
+      <if test="verdictPenalty != null">
+        #{verdictPenalty,jdbcType=VARCHAR},
+      </if>
+      <if test="executiondate != null">
+        #{executiondate,jdbcType=DATE},
+      </if>
+      <if test="inaffair != null">
+        #{inaffair,jdbcType=DATE},
+      </if>
+      <if test="affairdate != null">
+        #{affairdate,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.community.demo.entity.JudgmentExample" resultType="java.lang.Long">
+    select count(*) from judgment
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update judgment
+    <set>
+      <if test="record.jno != null">
+        jNo = #{record.jno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.courtname != null">
+        courtName = #{record.courtname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.judgmentdate != null">
+        judgmentDate = #{record.judgmentdate,jdbcType=DATE},
+      </if>
+      <if test="record.originaldate != null">
+        originalDate = #{record.originaldate,jdbcType=DATE},
+      </if>
+      <if test="record.enddate != null">
+        endDate = #{record.enddate,jdbcType=DATE},
+      </if>
+      <if test="record.supplementaryPunishments != null">
+        Supplementary_punishments = #{record.supplementaryPunishments,jdbcType=VARCHAR},
+      </if>
+      <if test="record.charges != null">
+        charges = #{record.charges,jdbcType=VARCHAR},
+      </if>
+      <if test="record.verdictPenalty != null">
+        Verdict_penalty = #{record.verdictPenalty,jdbcType=VARCHAR},
+      </if>
+      <if test="record.executiondate != null">
+        executionDate = #{record.executiondate,jdbcType=DATE},
+      </if>
+      <if test="record.inaffair != null">
+        inAffair = #{record.inaffair,jdbcType=DATE},
+      </if>
+      <if test="record.affairdate != null">
+        affairDate = #{record.affairdate,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update judgment
+    set jNo = #{record.jno,jdbcType=VARCHAR},
+      courtName = #{record.courtname,jdbcType=VARCHAR},
+      judgmentDate = #{record.judgmentdate,jdbcType=DATE},
+      originalDate = #{record.originaldate,jdbcType=DATE},
+      endDate = #{record.enddate,jdbcType=DATE},
+      Supplementary_punishments = #{record.supplementaryPunishments,jdbcType=VARCHAR},
+      charges = #{record.charges,jdbcType=VARCHAR},
+      Verdict_penalty = #{record.verdictPenalty,jdbcType=VARCHAR},
+      executionDate = #{record.executiondate,jdbcType=DATE},
+      inAffair = #{record.inaffair,jdbcType=DATE},
+      affairDate = #{record.affairdate,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.community.demo.entity.Judgment">
+    update judgment
+    <set>
+      <if test="courtname != null">
+        courtName = #{courtname,jdbcType=VARCHAR},
+      </if>
+      <if test="judgmentdate != null">
+        judgmentDate = #{judgmentdate,jdbcType=DATE},
+      </if>
+      <if test="originaldate != null">
+        originalDate = #{originaldate,jdbcType=DATE},
+      </if>
+      <if test="enddate != null">
+        endDate = #{enddate,jdbcType=DATE},
+      </if>
+      <if test="supplementaryPunishments != null">
+        Supplementary_punishments = #{supplementaryPunishments,jdbcType=VARCHAR},
+      </if>
+      <if test="charges != null">
+        charges = #{charges,jdbcType=VARCHAR},
+      </if>
+      <if test="verdictPenalty != null">
+        Verdict_penalty = #{verdictPenalty,jdbcType=VARCHAR},
+      </if>
+      <if test="executiondate != null">
+        executionDate = #{executiondate,jdbcType=DATE},
+      </if>
+      <if test="inaffair != null">
+        inAffair = #{inaffair,jdbcType=DATE},
+      </if>
+      <if test="affairdate != null">
+        affairDate = #{affairdate,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where jNo = #{jno,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.community.demo.entity.Judgment">
+    update judgment
+    set courtName = #{courtname,jdbcType=VARCHAR},
+      judgmentDate = #{judgmentdate,jdbcType=DATE},
+      originalDate = #{originaldate,jdbcType=DATE},
+      endDate = #{enddate,jdbcType=DATE},
+      Supplementary_punishments = #{supplementaryPunishments,jdbcType=VARCHAR},
+      charges = #{charges,jdbcType=VARCHAR},
+      Verdict_penalty = #{verdictPenalty,jdbcType=VARCHAR},
+      executionDate = #{executiondate,jdbcType=DATE},
+      inAffair = #{inaffair,jdbcType=DATE},
+      affairDate = #{affairdate,jdbcType=VARCHAR}
+    where jNo = #{jno,jdbcType=VARCHAR}
+  </update>
+</mapper>
