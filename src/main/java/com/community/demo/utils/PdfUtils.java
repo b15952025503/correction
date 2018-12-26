@@ -31,10 +31,7 @@ public class PdfUtils {
     private PdfUtils() {
     }
 
-
     private static final Logger LOGGER = LoggerFactory.getLogger(PdfUtils.class);
-
-
     /**
      * 按模板和参数生成html字符串,再转换为flying-saucer识别的Document
      *
