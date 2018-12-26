@@ -6,8 +6,18 @@
 </head>
 <body>
     <h3>发布公告</h3>
-
-
+    <div class="layui-form-item">
+        <label class="layui-form-label">请输入标题</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">内容</label>
+        <div class="layui-input-block">
+            <textarea name="desc" placeholder="请输入内容" class="layui-textarea"></textarea>
+        </div>
+    </div>
 
 </body>
 </html>

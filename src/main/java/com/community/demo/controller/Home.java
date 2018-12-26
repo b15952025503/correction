@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -112,7 +111,6 @@ public class Home {
         List<Map<String, Rectification>> maps = rm.queryAll(name);
         PageInfo<Map<String, Rectification>> page=new PageInfo<Map<String, Rectification>>(maps);
         model.addAttribute("PageInfo",page);
-
         return "archivesQuery::table_refresh";
     }
 
@@ -167,8 +165,4 @@ public class Home {
         List<Map<String, Object>> struts = rm.queryStruts();
         return struts;
     }
-
-
-
-
 }
