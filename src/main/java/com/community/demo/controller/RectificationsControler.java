@@ -5,20 +5,21 @@ import com.community.demo.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Controller
 @RequestMapping("Rectifications")
 public class RectificationsControler {
+    //矫正人员
     @Autowired
     RectificationMapper rectificationMapper;
     //监管级别下拉框
@@ -42,22 +43,15 @@ public class RectificationsControler {
     //省市级联下拉框
     @Autowired
     ProcityMapper procityMapper;
-    //判决时局部刷新
+   //判决书添加
     @Autowired
     JudgmentMapper judgmentMapper;
-    @RequestMapping("/li")
-    public  String getConstsTypeByid(ModelMap model){
-        ProcityExample procityExample=new ProcityExample();
-
-        ProcityExample.Criteria criteria = procityExample.createCriteria();
-        criteria.andParentcodeEqualTo("1");
-        List<Procity> procities = procityMapper.selectByExample(procityExample);
-        System.out.println("省"+procities);
-        model.addAttribute("procities",procities);
-        return "RectificationAdd";
-    }
-
-
+    //犯罪事实添加
+    @Autowired
+    CorpusDelictiMapper corpusDelictiMapper;
+    //社会关系
+    @Autowired
+    RelationMapper relationMapper;
 
     @RequestMapping("/l")
     public String getConstsTypeBycode(HttpServletRequest request, HttpServletResponse response, Model model){
@@ -74,7 +68,7 @@ public class RectificationsControler {
 
         return "RectificationAdd::contype";
     }
-    @RequestMapping("regulatoryMapper")
+    @RequestMapping("query")
     public String licourse(Model model){
         //监管级别下拉框
         List<Regulatory> regulatories=regulatoryMapper.selectByExample(null);
@@ -100,16 +94,61 @@ public class RectificationsControler {
         //局部刷新
         Judgment judgment=judgmentMapper.selectByPrimaryKey(null);
         model.addAttribute("judgment",judgment);
+        //省市级联
+        ProcityExample procityExample=new ProcityExample();
+        ProcityExample.Criteria criteria = procityExample.createCriteria();
+        criteria.andParentcodeEqualTo("1");
+        List<Procity> procities = procityMapper.selectByExample(procityExample);
+        System.out.println("省"+procities);
+        model.addAttribute("procities",procities);
         return "RectificationAdd";
     }
+    /**
+     * 手机号存在性校验
+     */
+    @RequestMapping("phone")
+    @ResponseBody
+    public String phone(String phone){
+        System.out.println("进入");
+        List<Map<String, Object>> phone1 = rectificationMapper.phone(phone);
+        if(phone1.size()>0){
+            System.out.println("存在");
+            return "已存在";
+        }
+        return "不存在";
+    }
+    //身份证存在性校验校验
+    @RequestMapping("idcard")
+    @ResponseBody
+    public String idcard(String idcard){
+        System.out.println("身份证号");
+        List<Map<String, Object>> idcard1 = rectificationMapper.idcard(idcard);
+        if(idcard1.size()>0){
+            return "存在";
+        }
+        return "不存在";
+    }
     @RequestMapping("add")
-    public String add(MultipartFile photos , Rectification rectification){
-        //判决书添加
-        Judgment judgments=new Judgment();
+    public String add(MultipartFile photos ,Judgment judgments,CorpusDelicti corpusDelicti,
+                      Rectification rectification,Relation relation){
+        /**
+         *判决书添加
+         */
+        //Id自增
          judgments.setJno(judgmentMapper.increment());
-        judgmentMapper.insert(judgments);
-        //基本信息添加
+        //执行添加语句
+         judgmentMapper.insert(judgments);
+        System.out.println("11111111111"+judgments);
+
+        /**
+         *基本信息添加
+         */
+        //Id自增
         rectification.setRno(rectificationMapper.increment());
+        judgments = judgmentMapper.querybyd();
+        System.out.println(judgments.getJno());
+        rectification.setjNo(judgments.getJno());
+
         String fileName=photos.getOriginalFilename();
         System.out.println(fileName);
         File newfile=null;
@@ -130,12 +169,20 @@ public class RectificationsControler {
         } catch (Exception e) {
             return "error";
         }
-        System.out.println(newFileName);
         rectification.setPhoto(newFileName);
-        rectification.setjNo(judgmentMapper.increment());
         rectificationMapper.insert(rectification);
         System.out.println(rectification);
 
-        return "redirect:regulatoryMapper";
+        //犯罪事实添加
+        rectification=rectificationMapper.query();
+        corpusDelicti.setRno(rectification.getRno());
+        corpusDelictiMapper.insert(corpusDelicti);
+        System.out.println(corpusDelicti);
+        //社会关系添加
+        relation.setRno(rectification.getRno());
+
+        relationMapper.insert(relation);
+        System.out.println(relation);
+        return "redirect:query";
     }
 }

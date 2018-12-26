@@ -178,7 +178,7 @@
                                 <td th:text="${item.fname}"></td>
                                 <td>
                                     <a onclick="pdf(this)" class="layui-btn layui-btn-primary layui-btn-sm">详细信息</a>
-                                    <button  type="button"class="layui-btn layui-btn-primary layui-btn-sm">修改</button>
+                                    <a th:href="@{/Rectifications/update(id=${item.rno})}">修改</a>
                                 </td>
                             </tr>
                         </tbody>

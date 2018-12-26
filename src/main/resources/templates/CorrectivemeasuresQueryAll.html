@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+<link rel="stylesheet" href="/css/font.css">
+<link rel="stylesheet" href="/css/xadmin.css">
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="/lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="/js/xadmin.js"></script>
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+        //查询
+        table.render({
+            elem: '#test'
+            ,url:'/Correctivemeasures/queryAll'
+            ,page:true
+            ,limits: [3,5,10]
+            ,limit: 5 //每页默认显示的数量
+            ,cols: [[
+                {field:'photo',  title: '头像' ,templet:'<div><img src="{{d.photo}}" width="60" height="30" alt="Computer man"></div>',sort: true}
+                ,{field:'rname',  title: '名字'}
+                ,{field:'correctivid', title:'编号'}
+                ,{field:"correctivdate", title: '开始日期'}
+                ,{field:'correctivdatetwo',  title: '结束日期'}
+                ,{field:'correctivname', title: '所做任务'}
+                ,{field:'correctivresult',  title: '评分结果'}
+                ,{field:'flag',  title: '状态'}
+
+            ]]
+        });
+        //监听单元格编辑
+        table.on('edit(test)', function(obj){
+            var value = obj.value //得到修改后的值
+                ,data = obj.data //得到所在行所有键值
+                ,field = obj.field; //得到字段
+            layer.msg('[ID: '+ data.id +'] ' + field + ' 字段更改为：'+ value);
+        });
+    });
+
+
+
+
+</script>
+
+<body>
+<table class="layui-hide" id="test"></table>
+<!--
+<form class="layui-form" action="" method="post">
+    <table class="layui-table" th:each="query:${queryAll}">
+        <tr>
+            <td>图片</td>
+            <td>姓名</td>
+            <td>开始日期</td>
+            <td>结束日期</td>
+            <td>做的任务</td>
+            <td>评分结果</td>
+            <td>状态</td>
+        </tr>
+        <tr>
+            <td>图片</td>
+            <td>姓名</td>
+            <td>开始日期</td>
+            <td>结束日期</td>
+            <td>做的任务</td>
+            <td>评分结果</td>
+            <td>状态</td>
+        </tr>
+    </table>
+</form>-->
+</body>
+</html>

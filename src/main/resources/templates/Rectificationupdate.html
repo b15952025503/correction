@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="/css/font.css">
+    <link rel="stylesheet" href="/css/xadmin.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/js/xadmin.js"></script>
+
+    <script type="text/javascript">
+
+        function previewImage(file) {
+            var MAXWIDTH = 260;
+            var MAXHEIGHT = 180;
+            var div = document.getElementById('preview');
+            if (file.files && file.files[0]) {
+                div.innerHTML = '<img id=imghead>';
+                var img = document.getElementById('imghead');
+                img.onload = function () {
+                    var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+                    img.width = rect.width;
+                    img.height = rect.height;
+//                 img.style.marginLeft = rect.left+'px';
+                    img.style.marginTop = rect.top + 'px';
+                }
+                var reader = new FileReader();
+                reader.onload = function (evt) {
+                    img.src = evt.target.result;
+                }
+                reader.readAsDataURL(file.files[0]);
+            }
+            else //兼容IE
+            {
+                var sFilter = 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+                file.select();
+                var src = document.selection.createRange().text;
+                div.innerHTML = '<img id=imghead>';
+                var img = document.getElementById('imghead');
+                img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+                var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+                status = ('rect:' + rect.top + ',' + rect.left + ',' + rect.width + ',' + rect.height);
+                div.innerHTML = "<div id=divhead style='width:" + rect.width + "px;height:" + rect.height + "px;margin-top:" + rect.top + "px;" + sFilter + src + "\"'></div>";
+            }
+        }
+
+        function clacImgZoomParam(maxWidth, maxHeight, width, height) {
+            var param = {top: 0, left: 0, width: width, height: height};
+            if (width > maxWidth || height > maxHeight) {
+                rateWidth = width / maxWidth;
+                rateHeight = height / maxHeight;
+
+                if (rateWidth > rateHeight) {
+                    param.width = maxWidth;
+                    param.height = Math.round(height / rateWidth);
+                } else {
+                    param.width = Math.round(width / rateHeight);
+                    param.height = maxHeight;
+                }
+            }
+            param.left = Math.round((maxWidth - param.width) / 2);
+            param.top = Math.round((maxHeight - param.height) / 2);
+            return param;
+        }
+
+        function show_cons(a) {
+            var consts_id = a;
+            /*alert("aaa"+consts_id);*/
+            $('#contype').load("l", {consts_id: consts_id});
+        }
+
+        function show_course(b) {
+            var parent_id = b;
+            /*alert(parent_id);*/
+            $('#section').load("licourse", {parent_id: parent_id});
+        }
+
+        //用身份证获取生日年龄性别
+        function getCode() {
+            //获取输入身份证号码
+            var UUserCard = $("#idcard").val();
+            if(UUserCard != null && UUserCard != ''){
+                //获取出生日期
+                var birthday = UUserCard.substring(6, 10) + "/" + UUserCard.substring(10, 12) + "/" + UUserCard.substring(12, 14);
+                //获取性别
+                var sex;
+                if (parseInt(UUserCard.substr(16, 1)) % 2 == 1) {
+                    sex="男"; //男
+                } else {
+                    sex="女"; //女
+                }
+                //获取年龄
+                var myDate = new Date();
+                var month = myDate.getMonth() + 1;
+                var day = myDate.getDate();
+
+                var age = myDate.getFullYear() - UUserCard.substring(6, 10) - 1;
+                if (UUserCard.substring(10, 12) < month || UUserCard.substring(10, 12) == month && UUserCard.substring(12, 14) <= day) {
+                    age++;
+                }
+                $("#birthday").val(birthday);
+                $("#sex").val(sex);
+                $("#age").val(age);
+                //年龄 age
+            }
+        };
+    </script>
+</head>
+<body>
+<div class="layui-tab">
+    <ul class="layui-tab-title">
+        <li class="layui-this">网站设置</li>
+        <li>基本档案</li>
+        <li>权限分配</li>
+        <li>商品管理</li>
+        <li>订单管理</li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+            <div class="layui-container">
+                <div class="layui-row">
+                    <div class="layui-col-md9">
+                        <form  enctype="multipart/form-data" action="/Rectifications/add"
+                               method="post">
+                            <table  class="layui-table" lay-size="sm" th:each="rect:${rectifications}">
+                                <input type="hidden" th:value="${rect.rno}" name="rno" class="layui-input" style="height: 20px">
+                                <tr>
+                                    <td width="50px">姓名</td>
+                                    <td>
+                                        <input th:value="${rect.rname}" name="rname" class="layui-input" style="height: 20px">
+                                    </td>
+                                    <td width="50px">曾用名</td>
+                                    <td>
+                                        <input  th:value="${rect.formerName}" name="formerName" class="layui-input" style="height: 20px">
+                                    </td>
+                                    <td>身份证号</td>
+                                    <td>
+                                        <input th:value="${rect.idcard}" name="idcard" id="idcard" class="layui-input" style="height: 20px" onblur="getCode()">
+                                    </td>
+                                    <td rowspan="5">
+                                        <div id="preview">
+                                            <img id="imghead" border=0 src="images/geren.png" height="180px">
+                                        </div>
+                                        <input type="file" onchange="previewImage(this)" name="photos"
+                                               style="width:100px"/>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>出生日期</td>
+                                    <td>
+                                        <input type="text" name="birthday" id="birthday" class="layui-input" style="height: 20px">
+                                    </td>
+                                    <td>性别</td>
+                                    <td>
+                                        <input type="text" name="sex" id="sex" class="layui-input" style="height: 20px">
+                                    </td>
+                                    <td>年龄</td>
+                                    <td>
+                                        <input type="text" name="age" id="age" class="layui-input" style="height: 20px">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>婚姻状况</td>
+                                    <td>
+                                        <select th:value="${rect.maritalStatus}" name="maritalStatus" style="height: 20px">
+                                            <option value="未婚">未婚</option>
+                                            <option value="已婚">已婚</option>
+                                            <option value="丧偶">丧偶</option>
+                                            <option value="离婚">离婚</option>
+                                        </select>
+                                    </td>
+                                    <td>民族</td>
+                                    <td>
+                                        <select th:value="${rect.tpid}" name="tpid">
+                                            <option th:each="item:${tpMz}" th:value="${item.id}">[[${item.name}]]
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td>政治面貌</td>
+                                    <td>
+                                        <select th:value="${rect.pid}" name="pid" style="height: 20px">
+                                            <option th:each="pts:${politics}" th:value="${pts.id}">[[${pts.name}]]
+                                            </option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>文化程度</td>
+                                    <td>
+                                        <select th:value="${rect.eid}" name="eid" style="height: 20px">
+                                            <option th:each="edt:${educations}" th:value="${edt.id}">[[${edt.name}]]
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td>职业</td>
+                                    <td>
+                                        <select th:value="${rect.position}" name="position" style="height: 20px">
+                                            <option value="在职">在职</option>
+                                            <option value="无业">无业</option>
+                                        </select>
+                                    </td>
+                                    <td>手机号码</td>
+                                    <td>
+                                        <input type="text" th:value="${rect.phone}" name="phone" class="layui-input" style="height: 20px">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>籍贯</td>
+                                    <td colspan="2">
+                                        <input type="text" th:value="${rect.nativePlace}" name="nativePlace" class="layui-input" style="height: 20px">
+                                    </td>
+                                    <td>户籍</td>
+                                    <td colspan="2">
+                                        <input type="text" th:value="${rect.householdRegistration}" name="householdRegistration" class="layui-input"
+                                               style=" width: 80%;;height: 20px">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>执行类型</td>
+                                    <td>
+                                        <select th:value="${rect.pcid}" name="pcid">
+                                            <option th:each="pfcg:${performCategories}" th:value="${pfcg.id}">
+                                                [[${pfcg.name}]]
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td>居住地</td>
+                                    <td>
+                                        <select onchange="show_cons(this.options[this.options.selectedIndex].value)" th:value="${rect.address}" name="address" id="aaa">
+                                            <option th:value="1">--请选择--</option>
+                                            <option th:each="consts:${procities}" th:value="${consts.pccode}">[[${consts.pcname}]]</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <!--市-->
+                                        <select id="contype" th:fragment="contype" onchange="show_course(this.options[this.options.selectedIndex].value)" th:value="${rect.address}" name="address">
+                                            <option th:each="constsType:${constsType}" th:value="${constsType.pccode}">[[${constsType.pcname}]]</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="address" style="height: 20px">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>监管级别</td>
+                                    <td colspan="3">
+                                        <select th:value="${rect.rid}" name="rid">
+                                            <option th:each="consts:${regulatories}" th:value="${consts.id}">
+                                                [[${consts.name}]]
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td>矫正状态</td>
+                                    <td colspan="3">
+                                        <select th:value="${rect.flag}" name="flag">
+                                            <option th:each="rf:${rectflags}" th:value="${rf.id}">[[${rf.fname}]]
+                                            </option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>活动区域</td>
+                                    <td colspan="3">
+                                        <select  th:value="${rect.activeArea}" name="activeArea">
+                                            <option value="二七区">二七区</option>
+                                            <option value="二七区">中原区</option>
+                                            <option value="二七区">金水区</option>
+                                        </select>
+                                    </td>
+                                    <td>就业状况</td>
+                                    <td colspan="3">
+                                        <select th:value="${rect.eflag}" name="eflag" style="height: 20px">
+                                            <option >就职</option>
+                                            <option >待业</option>
+                                        </select>
+                                    </td>
+                                </tr>
+
+                            </table>
+                            <!--局部刷新判决书上的值-->
+                            <table class="layui-table" lay-size="sm">
+                                <input type="hidden" name="jNo" class="layui-input" style="height: 20px">
+                                <tr>
+                                    <td>判决机关</td>
+                                    <td colspan="2">
+                                        <select name="courtname">
+                                            <option value="二七区法院">二七区法院</option>
+                                            <option value="中原区法院">中原区法院</option>
+                                            <option value="金水区法院">金水区法院</option>
+                                        </select>
+                                    </td>
+                                    <td>判决日期</td>
+                                    <td>
+                                        <input type="text" name="judgmentdate" class="layui-input" style="height: 20px">
+                                    </td>
+                                    <td>罪名</td>
+                                    <td>
+                                        <input type="text" name="charges" class="layui-input" style="height: 20px">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>原判刑期</td>
+                                    <td>
+                                        <input type="text" name="originaldate" class="layui-input" style="height: 20px">
+                                    </td>
+                                    <td>附加刑</td>
+                                    <td colspan="4">
+                                        <input type="text" name="supplementaryPunishments" class="layui-input"
+                                               style="height: 20px">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>判决处罚</td>
+                                    <td>
+                                        <input type="text" name="verdictPenalty" class="layui-input"
+                                               style="height: 20px">
+                                    </td>
+                                    <td>刑期起始</td>
+                                    <td colspan="2">
+                                        <input type="text" name="executiondate" class="layui-input"
+                                               style=" width: 80%;;height: 20px">
+                                    </td>
+                                    <td>刑期截止</td>
+                                    <td colspan="2">
+                                        <input type="text" name="enddate" class="layui-input"
+                                               style=" width: 80%;;height: 20px">
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>入矫日期</td>
+                                    <td>
+                                        <input type="text" name="inaffair" class="layui-input" style="height: 20px">
+                                    </td>
+                                    <td>矫正期限</td>
+                                    <td colspan="4">
+                                        <input type="text" name="affairdate" class="layui-input" style="height: 20px">
+                                    </td>
+                                </tr>
+                            </table>
+                            <input type="submit" value="提交订单">
+                        </form>
+                    </div>
+                    <div class="layui-col-md3">
+                        你的内容 3/12
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-tab-item">内容2</div>
+        <div class="layui-tab-item">内容3</div>
+        <div class="layui-tab-item">内容4</div>
+        <div class="layui-tab-item">内容5</div>
+    </div>
+</div>
+<script>
+    //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function () {
+        var element = layui.element;
+
+        //…
+    });
+</script>
+</body>
+</html>e4

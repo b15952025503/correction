@@ -39,7 +39,7 @@
         </javaClientGenerator>
 
         <!-- 通讯录人员表 -->
-        <table schema="demo" tableName="proCity"></table>
+        <table schema="demo" tableName="correctivemeasure"></table>
         <!--
          <table schema="demo" tableName="education"></table>
          <table schema="demo" tableName="employees"></table>

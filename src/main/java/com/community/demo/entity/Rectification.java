@@ -55,7 +55,6 @@ public class Rectification {
 
     private String rgname;
 
-    private String phone;
     private String tpname;
 
     private String context;
@@ -70,6 +69,7 @@ public class Rectification {
 
     private String courtName;
 
+    private String phone;
     private String judgmentDate;
 
     private String originalDate;
@@ -80,30 +80,12 @@ public class Rectification {
 
     private String endDate;
     private Integer fid;
-  /*  //文化程度
-    private Integer eid;
-    //政治面貌
-    private Integer pid;
-    //执行类型
-    private Integer pcid;
-    //监管级别
-    private Integer rid;
-    //矫正状态
-    private Integer rfid;
-    //民族
-    private Integer tid;*/
+
 
     public Rectification() {
         super();
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
 
     public String getEndDate() {
         return endDate;
@@ -417,6 +399,14 @@ public class Rectification {
         this.fid = fid;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     @Override
     public String toString() {
         return "Rectification{" +
@@ -454,11 +444,13 @@ public class Rectification {
                 ", pphone='" + pphone + '\'' +
                 ", jNo='" + jNo + '\'' +
                 ", courtName='" + courtName + '\'' +
+                ", phone='" + phone + '\'' +
                 ", judgmentDate='" + judgmentDate + '\'' +
                 ", originalDate='" + originalDate + '\'' +
                 ", Supplementary_punishments='" + Supplementary_punishments + '\'' +
                 ", fname='" + fname + '\'' +
                 ", endDate='" + endDate + '\'' +
+                ", fid=" + fid +
                 '}';
     }
 }

@@ -118,18 +118,18 @@
     </if>
 </delete>
   <insert id="insert" parameterType="com.community.demo.entity.Rectification">
-    insert into rectification (rNO,phone, jNo,photo, rname,
+    insert into rectification (rNO,photo, rname,
       Former_name, idcard, sex, 
       age, birthday, position, 
       Marital_status, Native_place, household_registration, 
-      address, eid, pid, 
+      address, eid, pid,jNo,phone,
       pcid, rid, tpid, Active_area, 
       eflag, flag)
-    values (#{rno,jdbcType=VARCHAR},#{phone},#{jNo},#{photo,jdbcType=VARCHAR}, #{rname,jdbcType=VARCHAR},
+    values (#{rno,jdbcType=VARCHAR},#{photo,jdbcType=VARCHAR}, #{rname,jdbcType=VARCHAR},
       #{formerName,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, 
       #{age,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, #{position,jdbcType=VARCHAR}, 
       #{maritalStatus,jdbcType=VARCHAR}, #{nativePlace,jdbcType=VARCHAR}, #{householdRegistration,jdbcType=VARCHAR}, 
-      #{address,jdbcType=VARCHAR}, #{eid,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, 
+      #{address,jdbcType=VARCHAR}, #{eid,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, #{jNo,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},
       #{pcid,jdbcType=INTEGER}, #{rid,jdbcType=INTEGER}, #{tpid,jdbcType=INTEGER}, #{activeArea,jdbcType=VARCHAR}, 
       #{eflag,jdbcType=VARCHAR}, #{flag,jdbcType=VARCHAR})
   </insert>

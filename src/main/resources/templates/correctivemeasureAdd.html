@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="/css/font.css">
+    <link rel="stylesheet" href="/css/xadmin.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/js/xadmin.js"></script>
+    <script type="text/javascript">
+        function subc() {
+            /*var idcards=$("#idcard").val();
+            $("#fm").attr("action","/Correctivemeasures/query?idcard="+idcards).submit();*/
+            var idcards=$("#idcard").val();
+            $.ajax({
+               url:"/Correctivemeasures/query",
+               type:"post",
+               data:{idcard:idcards},
+               success:function (data) {
+                   var n=JSON.stringify(data);
+                   n=eval( "("+ n +")" );
+                   var rno=n.rno;
+                   $("#rno").val(rno);
+               }
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <form id="fm" action="" class="layui-form" method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">身份证号</label>
+            <div class="layui-inline">
+                <input type="text" name="idcard" id="idcard" class="layui-input" style="width: 300px">
+               </div>
+            <div class="layui-inline">
+                <button type="button" id="sub" onclick="subc()" class="layui-btn">查询</button>
+            </div>
+            <label class="layui-form-label">姓名</label>
+            <div class="layui-inline">
+                <input type="text" name="idcard" id="rname" class="layui-input" style="width: 300px">
+            </div>
+        </div>
+
+    </form>
+<form enctype="multipart/form-data"  action="/Correctivemeasures/add" method="post" lay-size="sm">
+      <input type="hidden" name="rno" id="rno">
+  <div class="layui-form-item">
+    <div class="layui-inline">
+        <label class="layui-form-label">开始时间</label>
+        <div class="layui-input-block">
+            <input type="date" name="correctivdate" required lay-verify="required"  style="width: 300px"
+                   autocomplete="off" class="layui-input" >
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">结束时间</label>
+        <div class="layui-input-block">
+            <input type="date" name="correctivdatetwo" required lay-verify="required" style="width: 300px"
+                   autocomplete="off" class="layui-input">
+        </div>
+    </div>
+</div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">状态</label>
+        <div class="layui-input-block">
+            <select name="flag" lay-verify="required" style="width: 300px">
+                <option value="0">未执行</option>
+                <option value="1">执行中</option>
+                <option value="2">执行完毕</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">所做的事情</label>
+        <div class="layui-input-block">
+            <textarea name="correctivname" placeholder="所做的事情" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">评分结果</label>
+        <div class="layui-input-block">
+            <textarea name="correctivresult" placeholder="评分结果" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+    <input type="submit" value="提交">
+</form>
+<script>
+    //Demo
+    layui.use('form', function () {
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function (data) {
+            layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+    });
+</script>
+</body>
+</html>
