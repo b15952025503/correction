@@ -43,6 +43,4 @@ public class RectificationController {
         System.out.println(maps);
         return "archivesQuery::dst_refresh";
     }
-
-
 }

@@ -50,4 +50,15 @@ public class Relation {
     public void setPhones(String phones) {
         this.phones = phones;
     }
+
+    @Override
+    public String toString() {
+        return "Relation{" +
+                "rid=" + rid +
+                ", rno='" + rno + '\'' +
+                ", family='" + family + '\'' +
+                ", addresss='" + addresss + '\'' +
+                ", phones='" + phones + '\'' +
+                '}';
+    }
 }

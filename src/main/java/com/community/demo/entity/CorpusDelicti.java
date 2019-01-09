@@ -30,4 +30,13 @@ public class CorpusDelicti {
     public void setContext(String context) {
         this.context = context == null ? null : context.trim();
     }
+
+    @Override
+    public String toString() {
+        return "CorpusDelicti{" +
+                "cd=" + cd +
+                ", rno='" + rno + '\'' +
+                ", context='" + context + '\'' +
+                '}';
+    }
 }
