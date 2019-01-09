@@ -109,7 +109,7 @@ public class RectificationsControler {
     @RequestMapping("phone")
     @ResponseBody
     public String phone(String phone){
-        System.out.println("进入");
+        //查询数据库是否有手机号存在
         List<Map<String, Object>> phone1 = rectificationMapper.phone(phone);
         if(phone1.size()>0){
             System.out.println("存在");
@@ -121,7 +121,7 @@ public class RectificationsControler {
     @RequestMapping("idcard")
     @ResponseBody
     public String idcard(String idcard){
-        System.out.println("身份证号");
+        //查询数据库是否有身份证存在
         List<Map<String, Object>> idcard1 = rectificationMapper.idcard(idcard);
         if(idcard1.size()>0){
             return "存在";
@@ -171,18 +171,21 @@ public class RectificationsControler {
         }
         rectification.setPhoto(newFileName);
         rectificationMapper.insert(rectification);
-        System.out.println(rectification);
+        System.out.println("222222222222"+rectification);
 
-        //犯罪事实添加
+        /**
+         *犯罪事实添加
+         */
+        //获取基础表中的值
         rectification=rectificationMapper.query();
         corpusDelicti.setRno(rectification.getRno());
         corpusDelictiMapper.insert(corpusDelicti);
         System.out.println(corpusDelicti);
+
         //社会关系添加
         relation.setRno(rectification.getRno());
-
         relationMapper.insert(relation);
         System.out.println(relation);
-        return "redirect:query";
+        return "redirect:/archivesQuery";
     }
 }

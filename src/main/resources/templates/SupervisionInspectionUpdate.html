@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="/css/font.css">
+    <link rel="stylesheet" href="/css/xadmin.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/js/xadmin.js"></script>
+    <script type="text/javascript">
+
+    </script>
+</head>
+<body>
+<form enctype="multipart/form-data" class="layui-form"  action="/SupervisionInspections/update" method="post" lay-size="sm">
+    <!--添加矫正人员编号-->
+    <input type="hidden" name="suid" th:value="${list.suid}">
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">监督评价</label>
+            <div class="layui-input-block">
+                <textarea name="suresult" placeholder="监督事务" lay-verify="required" class="layui-textarea" style=" width: 800px;"></textarea>
+            </div>
+        </div>
+   </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            <a href="/archivesQuery" class="layui-btn">退出</a>
+        </div>
+    </div>
+</form>
+<script>
+    //Demo
+    layui.use('form', function () {
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function (data) {
+            return true;
+        });
+    });
+</script>
+</body>
+</html>

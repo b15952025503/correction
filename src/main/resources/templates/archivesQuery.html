@@ -390,14 +390,14 @@
                             </thead>
                             <tbody th:each="it :${PageInfo}" >
                             <tr th:each="item :${it.list}" ondblclick="showInfo(this)" onmouseout="closeInfo(this)">
-                                <input type="hidden" th:value="${item.rno}" th:name="${item.rno}"/>
+                                <input id="rno" type="hidden" th:value="${item.rno}" th:name="${item.rno}"/>
                                 <td th:text="${item.rname}"  contenteditable="false" name="rname" onclick="isable(this)"></td>
                                 <td th:text="${item.sex}" contenteditable="false" ondbclick="sexIsable(this)"></td>
                                 <td th:text="${item.pcname}"></td>
                                 <td  th:text="${item.rgname}"></td>
                                 <td  th:text="${item.inAffair}"></td>
-                                <td  th:text="${item.endDate}"></td>
-                                <td><img src="/images/kh.png" width="30px" height="30px"></td>
+                                <td th:text="${item.endDate}"></td>
+                                <td><a th:href="@{/Correctivemeasures/queryid(rno=${item.rno})}" ><img src="/images/kh.png" width="30px" height="30px"></a></td>
                                 <td class="jkzt"><img th:src="${item.icon}" width="30px" height="30px"></td>
                                 <td class="fbrw"><img src="/images/fbrw.png" width="30px" height="30px"></td>
                                 <td  th:text="${item.fname}"></td>
@@ -443,6 +443,9 @@
         $('#table_refresh').load("query?Num="+Num);
         //window.location.href="query?Num="+Num;
     };
+    function pdx(obj){
+        alert(obj)
+    }
 </script>
 </body>
 </html>

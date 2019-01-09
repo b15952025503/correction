@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="/css/font.css">
+    <link rel="stylesheet" href="/css/xadmin.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/js/xadmin.js"></script>
+
+    <script type="text/javascript">
+        /*$(document).ready(function () {
+            var time=$("#s1").val();
+            var date=new Date(time);
+            date_value=date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate();
+            $("#s1").val(date_value);
+        })
+        $(document).ready(function () {
+            var time=$("#s2").val();
+            var date=new Date(time);
+            date_value=date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate();
+            $("#s2").val(date_value);
+        })*/
+    </script>
+</head>
+
+<body>
+<form enctype="multipart/form-data" class="layui-form"  action="/Correctivemeasures/update" method="post" lay-size="sm">
+    <fieldset class="layui-elem-field">
+        <legend>教育矫正评价</legend>
+    <!--添加矫正人员编号-->
+    <input type="hidden" name="correctivid" th:value="${list.correctivid}">
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">任务评价</label>
+        <div class="layui-input-block">
+            <textarea name="correctivresult" th:text="${list.correctivresult}" lay-verify="required" placeholder="任务评价" class="layui-textarea" style=" width: 800px;"></textarea>
+        </div>
+    </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                <a href="/archivesQuery" class="layui-btn">退出</a>
+            </div>
+        </div>
+
+    </fieldset>
+
+</form>
+<script>
+    //Demo
+    layui.use('form', function () {
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function (data) {
+            layer.msg(JSON.stringify(data.field));
+            return true;
+        });
+
+    });
+</script>
+<script>
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#test1' //指定元素
+        });
+    })
+</body>
+</html>

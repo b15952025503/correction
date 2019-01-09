@@ -106,9 +106,9 @@
     insert into correctivemeasure (correctivid, rNO, correctivdate, 
       correctivdatetwo, correctivname, correctivresult, 
       flag)
-    values (#{correctivid,jdbcType=VARCHAR}, #{rno,jdbcType=VARCHAR}, #{correctivdate,jdbcType=DATE}, 
-      #{correctivdatetwo,jdbcType=DATE}, #{correctivname,jdbcType=VARCHAR}, #{correctivresult,jdbcType=VARCHAR}, 
-      #{flag,jdbcType=INTEGER})
+    values (#{correctivid,jdbcType=VARCHAR}, #{rno,jdbcType=VARCHAR}, now(),
+      #{correctivdatetwo,jdbcType=DATE}, #{correctivname,jdbcType=VARCHAR}, #{correctivresult,jdbcType=VARCHAR},
+      1)
   </insert>
   <insert id="insertSelective" parameterType="com.community.demo.entity.Correctivemeasure">
     insert into correctivemeasure
@@ -233,12 +233,22 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.community.demo.entity.Correctivemeasure">
     update correctivemeasure
-    set rNO = #{rno,jdbcType=VARCHAR},
-      correctivdate = #{correctivdate,jdbcType=DATE},
-      correctivdatetwo = #{correctivdatetwo,jdbcType=DATE},
-      correctivname = #{correctivname,jdbcType=VARCHAR},
+    set correctivdatetwo = now(),
       correctivresult = #{correctivresult,jdbcType=VARCHAR},
-      flag = #{flag,jdbcType=INTEGER}
+      flag = 2
     where correctivid = #{correctivid,jdbcType=VARCHAR}
   </update>
+  <select id="queryById" parameterType="string" resultType="map">
+  SELECT
+  r.rNo,r.idcard,r.rname,c.correctivid,c.correctivdate,c.correctivdatetwo,c.correctivname,c.correctivresult,c.flag,s.suid,s.eNo,e.ename,s.sudate,s.sudatetwo,s.suEvent,s.suResult,s.suStatic
+  ,em.emid,em.emdate,em.emFraction,em.emflag
+  FROM
+  rectification r
+  join correctivemeasure c
+  join  supervision_inspection s
+  join employees e
+	join exam em
+  where r.rNO=#{param1}
+  GROUP BY r.rNO
+  </select>
 </mapper>

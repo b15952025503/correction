@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="/css/font.css">
+    <link rel="stylesheet" href="/css/xadmin.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/js/xadmin.js"></script>
+    <script type="text/javascript">
+        function subc() {
+            var idcards=$("#idcard").val();
+            $.ajax({
+                url:"/Exams/queryIdcard",
+                type:"post",
+                data:{idcard:idcards},
+                success:function (data) {
+                    var n=JSON.stringify(data);
+                    n=eval( "("+ n +")" );
+                    var rno=n.rno;
+                    $("#rno").val(rno);
+                    var rname=n.rname;
+                    $("#rname").val(rname);
+                    var photo=n.photo;
+                    $("#photo").attr("src",'/'+n.photo);
+
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<form id="fm" action="" class="layui-form" method="post">
+    <div class="layui-form-item">
+        <label class="layui-form-label">身份证号</label>
+        <div class="layui-inline">
+            <input type="text" th:value="${idcard}" name="idcard" id="idcard" class="layui-input" style="width: 300px">
+        </div>
+        <div class="layui-inline">
+            <button type="button" id="sub" onclick="subc()" class="layui-btn">查询</button>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div  class="layui-inline">
+            <label class="layui-form-label">姓名</label>
+            <div class="layui-inline">
+                <input type="text" name="rname"  id="rname" class="layui-input" style="width: 300px" readonly="readonly">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">图片</label>
+            <div class="layui-inline">
+                <img src="" id="photo" style="width: 50px;height: 60px"/>
+            </div>
+        </div>
+    </div>
+</form>
+<form enctype="multipart/form-data" class="layui-form"  action="/Exams/add" method="post" lay-size="sm">
+    <!--添加矫正人员编号-->
+    <input type="hidden" name="rno" id="rno">
+    <div class="layui-form-item">
+        <label class="layui-form-label">总成绩</label>
+        <div class="layui-inline">
+            <select name="emfraction" lay-verify="required">
+                <option value="">-请选择-</option>
+                <option value="1">优</option>
+                <option value="2">良</option>
+                <option value="3">中</option>
+                <option value="3">差</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+            <a href="/archivesQuery" class="layui-btn">退出</a>
+        </div>
+    </div>
+</form>
+<script>
+    //Demo
+    layui.use('form', function () {
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function (data) {
+            return true;
+        });
+    });
+</script>
+</body>
+</html>

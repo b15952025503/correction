@@ -169,14 +169,13 @@
                 data:{idcard:UUserCard,
                 },
                 success:function(data){
-                  if(data>0){
+                  if(data=="存在"){
                       $("#idcard_err").html("身份证已存在");
                       return false;
                   }
                     $("#idcard_err").html("");
                 }
             });
-            return true;
             //获取输入身份证号码
             if (UUserCard != null && UUserCard != '') {
                 //获取出生日期
@@ -242,7 +241,7 @@
     </script>
 </head>
 <body>
-<form enctype="multipart/form-data" action="/Correctivemeasures/add" method="post" id="fm">
+<form enctype="multipart/form-data" action="/Rectifications/add" method="post" id="fm">
     <table class="layui-table" lay-size="sm">
         <tr>
             <td width="50px">姓名</td>

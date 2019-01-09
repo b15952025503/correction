@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+    <link rel="stylesheet" href="/lib/layui/css/layui.css">
+    <script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/lib/layui/layui.js" charset="utf-8"></script>
+    <script src="/js/echarts.min.js"></script>
+</head>
+
+<style type="text/css">
+    * {
+        padding: 0px;
+        margin: 0px;
+    }
+
+    .bg {
+
+        border: 1px solid #ccc;
+        width: 350px;
+        height: 100%;
+        background: content-box;
+        margin-right: 0px;
+        margin-top: 0px;
+        text-align: center;
+        color: #999;
+    }
+
+    .bg1 {
+
+        border: 1px solid #ccc;
+        width: 100%;
+        height: 100%;
+        background: content-box;
+        margin-right: 0px;
+        margin-top: 0px;
+        text-align: center;
+        color: #999;
+    }
+
+</style>
+<!--转换日期类型-->
+<script type="text/javascript">
+    $(document).ready(function () {
+        <!--获取文本框ID名 -->
+        var time=$("#s1").val();
+        var date=new Date(time);
+        date_value=date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+        $("#s1").val(date_value);
+    })
+    $(document).ready(function () {
+        var time=$("#s2").val();
+        var date=new Date(time);
+        date_value=date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+        $("#s2").val(date_value);
+    })
+    $(document).ready(function () {
+        var time=$("#s3").val();
+        var date=new Date(time);
+        date_value=date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+        $("#s3").val(date_value);
+    })
+    $(document).ready(function () {
+        var time=$("#s4").val();
+        var date=new Date(time);
+        date_value=date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+        $("#s4").val(date_value);
+    })
+    $(document).ready(function () {
+        var time=$("#s5").val();
+        var date=new Date(time);
+        date_value=date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+        $("#s5").val(date_value);
+    })
+</script>
+<body>
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>矫正成绩综合</legend>
+</fieldset>
+<form onsubmit="return false" action="" method="post" id="frm">
+    <!--隐藏id-->
+    <input type="hidden" th:value="${re.rNo}" name="rNo">
+    <div class="layui-row">
+        <div class="layui-col-md12">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">姓名：</label>
+                    <div class="layui-input-block">
+                        <input th:value="${re.rname}" readonly="readonly" style="width: 300px"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">身份证号：</label>
+                    <div class="layui-input-block">
+                        <input th:value="${re.idcard}" readonly="readonly" style="width: 300px"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <div class="layui-input-block">
+                        <a href="/archivesQuery" class="layui-btn">退出</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md4">
+            <div class="bg" th:if="${em} ne null">
+                <fieldset class="layui-elem-field">
+                    <legend>考试评分</legend>
+                    <input type="hidden" th:value="${em.emid}" name="emid">
+                    <table>
+                        <tr>
+                            <td>考试时间：</td>
+                            <td>
+                                <input th:value="${em.emdate}" id="s1" readonly="readonly"
+                                       class="layui-input" >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>考试结果：</td>
+                            <td>
+                                <div class="layui-input-block" th:if="${em.emfraction}==1">
+                                    <span>优</span>
+                                </div>
+                                <div class="layui-input-block" th:if="${em.emfraction}==2">
+                                    <span>良</span>
+                                </div>
+                                <div class="layui-input-block" th:if="${em.emfraction}==3">
+                                    <span>中</span>
+                                </div>
+                                <div class="layui-input-block" th:if="${em.emfraction}==4">
+                                    <span>差</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>考试状态：</td>
+                            <td>
+                                <div class="layui-input-block" th:if="${em.emflag}==1">
+                                    执行完成
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                    </table>
+                </fieldset>
+            </div>
+            <div>
+
+            </div>
+            <div th:if="${em} eq null">
+                <label class="layui-form-label">考试状态</label>
+                <div class="layui-input-block">
+                    未考试
+                </div>
+
+                <a th:href="@{/Exams/show(idcard=${re.idcard})}">心理测试信息添加</a>
+            </div>
+        </div>
+        <div class="layui-col-md4">
+            <div class="bg" th:if="${corr} ne null">
+                <fieldset class="layui-elem-field">
+                    <legend>教育矫正</legend>
+                    <!--教育矫正ID-->
+                    <input type="hidden" th:value="${corr.correctivid}" name="correctivid">
+                    <table>
+                        <tr>
+                            <td>开始时间：</td>
+                            <td>
+                                <input th:value="${corr.correctivdate}" id="s2" readonly="readonly"
+                                       class="layui-input">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>结果时间：</td>
+                            <td th:if="${corr.correctivdatetwo} ne null">
+                                <input th:value="${corr.correctivdatetwo}" id="s3" readonly="readonly"
+                                       class="layui-input" style="width: 200px">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>任务：</td>
+                            <td>
+                                <textarea name="correctivresult" th:text="${corr.correctivname}" readonly="readonly" class="layui-textarea"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>任务评价：</td>
+                            <td th:if="${corr.correctivresult} ne null">
+                                <textarea name="correctivresult" th:text="${corr.correctivresult}"  class="layui-textarea" readonly="readonly"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>教育状态：</td>
+                            <td>
+                                <div class="layui-input-block" th:if="${corr.flag}==1">
+                                    执行中
+                                </div>
+                                <div class="layui-input-block" th:if="${corr.flag}==2">
+                                    执行完成
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="layui-input-block" th:if="${corr.flag}==1">
+                        <a th:href="@{/Correctivemeasures/updateShow(correctivid=${corr.correctivid})}">评价</a>
+                    </div>
+
+                </fieldset>
+            </div>
+            <div th:if="${corr} eq null">
+                <a th:href="@{/Correctivemeasures/show(idcard=${re.idcard})}">教育矫正信息添加</a>
+            </div>
+        </div>
+        <div class="layui-col-md4">
+            <div class="bg" th:if="${su} ne null">
+                <fieldset class="layui-elem-field">
+                    <legend>监督考察</legend>
+                    <!--教育考察ID-->
+                    <input type="hidden" th:value="${su.suid}" name="emid">
+                    <table>
+                        <tr>
+                            <td>监督人：</td>
+                            <td>
+                                <input th:value="${su.ename}" readonly="readonly"
+                                       class="layui-input">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>开始时间：</td>
+                            <td>
+                                <input th:value="${su.sudate}" id="s4" style="width: 200px" readonly="readonly"
+                                       class="layui-input">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>结果时间：</td>
+                            <td  th:if="${su.sudatetwo} ne null">
+                                <input th:value="${su.sudatetwo}" id="s5" readonly="readonly"
+                                       class="layui-input">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>监督任务：</td>
+                            <td>
+                                <textarea name="correctivresult" th:text="${su.suevent}" class="layui-textarea"  readonly="readonly"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>监督评价：</td>
+                            <td th:if="${su.suresult} ne null">
+                                <textarea name="correctivresult" th:text="${su.suresult}" class="layui-textarea"  readonly="readonly"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>监督状态：</td>
+                            <td>
+                                <div class="layui-input-block" th:if="${su.sustatic}==1">
+                                    执行中
+                                </div>
+                                <div class="layui-input-block" th:if="${su.sustatic}==2">
+                                    执行完成
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="layui-input-block" th:if="${su.sustatic}==1">
+                        <a th:href="@{/SupervisionInspections/updateShow(suid=${su.suid})}">评价</a>
+                    </div>
+                </fieldset>
+            </div>
+            <div th:if="${su} eq null">
+                <a th:href="@{/SupervisionInspections/show(idcard=${re.idcard})}">监督考察信息添加</a>
+            </div>
+        </div>
+        <div class="layui-col-md12">
+            <div class="bg1">
+                <button type="button" id='save' class="layui-btn layui-btn-radius layui-btn-normal">保存</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+</body>
+</html>

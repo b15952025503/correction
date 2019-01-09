@@ -485,7 +485,11 @@ public class Rectification {
     @Override
     public String toString() {
         return "Rectification{" +
-                "rno='" + rno + '\'' +
+                "list=" + list +
+                ", icon='" + icon + '\'' +
+                ", name='" + name + '\'' +
+                ", value=" + value +
+                ", rno='" + rno + '\'' +
                 ", photo='" + photo + '\'' +
                 ", rname='" + rname + '\'' +
                 ", formerName='" + formerName + '\'' +
@@ -524,6 +528,6 @@ public class Rectification {
                 ", Supplementary_punishments='" + Supplementary_punishments + '\'' +
                 ", fname='" + fname + '\'' +
                 ", endDate='" + endDate + '\'' +
-                '}'+list.size();
+                '}';
     }
 }

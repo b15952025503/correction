@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.community.demo.dao.SupervisionInspectionMapper">
+  <resultMap id="BaseResultMap" type="com.community.demo.entity.SupervisionInspection">
+    <id column="suid" jdbcType="INTEGER" property="suid" />
+    <result column="rNO" jdbcType="VARCHAR" property="rno" />
+    <result column="eNo" jdbcType="INTEGER" property="eno" />
+    <result column="sudate" jdbcType="DATE" property="sudate" />
+    <result column="sudatetwo" jdbcType="DATE" property="sudatetwo" />
+    <result column="suEvent" jdbcType="VARCHAR" property="suevent" />
+    <result column="suResult" jdbcType="VARCHAR" property="suresult" />
+    <result column="suStatic" jdbcType="INTEGER" property="sustatic" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    suid, rNO, eNo, sudate, sudatetwo, suEvent, suResult, suStatic
+  </sql>
+  <select id="selectByExample" parameterType="com.community.demo.entity.SupervisionInspectionExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from supervision_inspection
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from supervision_inspection
+    where suid = #{suid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from supervision_inspection
+    where suid = #{suid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.community.demo.entity.SupervisionInspectionExample">
+    delete from supervision_inspection
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.community.demo.entity.SupervisionInspection">
+    insert into supervision_inspection (suid, rNO, eNo, 
+      sudate, sudatetwo, suEvent, 
+      suResult, suStatic)
+    values (#{suid,jdbcType=INTEGER}, #{rno,jdbcType=VARCHAR}, #{eno,jdbcType=INTEGER}, 
+      now(), #{sudatetwo,jdbcType=DATE}, #{suevent,jdbcType=VARCHAR},
+      #{suresult,jdbcType=VARCHAR}, 1)
+  </insert>
+  <insert id="insertSelective" parameterType="com.community.demo.entity.SupervisionInspection">
+    insert into supervision_inspection
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="suid != null">
+        suid,
+      </if>
+      <if test="rno != null">
+        rNO,
+      </if>
+      <if test="eno != null">
+        eNo,
+      </if>
+      <if test="sudate != null">
+        sudate,
+      </if>
+      <if test="sudatetwo != null">
+        sudatetwo,
+      </if>
+      <if test="suevent != null">
+        suEvent,
+      </if>
+      <if test="suresult != null">
+        suResult,
+      </if>
+      <if test="sustatic != null">
+        suStatic,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="suid != null">
+        #{suid,jdbcType=INTEGER},
+      </if>
+      <if test="rno != null">
+        #{rno,jdbcType=VARCHAR},
+      </if>
+      <if test="eno != null">
+        #{eno,jdbcType=INTEGER},
+      </if>
+      <if test="sudate != null">
+        #{sudate,jdbcType=DATE},
+      </if>
+      <if test="sudatetwo != null">
+        #{sudatetwo,jdbcType=DATE},
+      </if>
+      <if test="suevent != null">
+        #{suevent,jdbcType=VARCHAR},
+      </if>
+      <if test="suresult != null">
+        #{suresult,jdbcType=VARCHAR},
+      </if>
+      <if test="sustatic != null">
+        #{sustatic,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.community.demo.entity.SupervisionInspectionExample" resultType="java.lang.Long">
+    select count(*) from supervision_inspection
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update supervision_inspection
+    <set>
+      <if test="record.suid != null">
+        suid = #{record.suid,jdbcType=INTEGER},
+      </if>
+      <if test="record.rno != null">
+        rNO = #{record.rno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.eno != null">
+        eNo = #{record.eno,jdbcType=INTEGER},
+      </if>
+      <if test="record.sudate != null">
+        sudate = #{record.sudate,jdbcType=DATE},
+      </if>
+      <if test="record.sudatetwo != null">
+        sudatetwo = #{record.sudatetwo,jdbcType=DATE},
+      </if>
+      <if test="record.suevent != null">
+        suEvent = #{record.suevent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.suresult != null">
+        suResult = #{record.suresult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sustatic != null">
+        suStatic = #{record.sustatic,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update supervision_inspection
+    set suid = #{record.suid,jdbcType=INTEGER},
+      rNO = #{record.rno,jdbcType=VARCHAR},
+      eNo = #{record.eno,jdbcType=INTEGER},
+      sudate = #{record.sudate,jdbcType=DATE},
+      sudatetwo = #{record.sudatetwo,jdbcType=DATE},
+      suEvent = #{record.suevent,jdbcType=VARCHAR},
+      suResult = #{record.suresult,jdbcType=VARCHAR},
+      suStatic = #{record.sustatic,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.community.demo.entity.SupervisionInspection">
+    update supervision_inspection
+    <set>
+      <if test="rno != null">
+        rNO = #{rno,jdbcType=VARCHAR},
+      </if>
+      <if test="eno != null">
+        eNo = #{eno,jdbcType=INTEGER},
+      </if>
+      <if test="sudate != null">
+        sudate = #{sudate,jdbcType=DATE},
+      </if>
+      <if test="sudatetwo != null">
+        sudatetwo = #{sudatetwo,jdbcType=DATE},
+      </if>
+      <if test="suevent != null">
+        suEvent = #{suevent,jdbcType=VARCHAR},
+      </if>
+      <if test="suresult != null">
+        suResult = #{suresult,jdbcType=VARCHAR},
+      </if>
+      <if test="sustatic != null">
+        suStatic = #{sustatic,jdbcType=INTEGER},
+      </if>
+    </set>
+    where suid = #{suid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.community.demo.entity.SupervisionInspection">
+    update supervision_inspection
+    set sudatetwo = now(),
+      suResult = #{suresult,jdbcType=VARCHAR},
+      suStatic = 2
+    where suid = #{suid,jdbcType=INTEGER}
+  </update>
+</mapper>
